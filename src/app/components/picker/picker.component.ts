@@ -55,6 +55,9 @@ export class PickerComponent {
 
     ////////////////////////////////
     removePerson(index) {
+
+        console.log(index);
+
         this.allPeople.splice(index, 1);
     }
 

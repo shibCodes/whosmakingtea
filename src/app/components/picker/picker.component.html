@@ -2,17 +2,17 @@
 
     <p class="instructions">{{instructionMessage}}</p>
 
+    <spinnyspin *ngIf="no"></spinnyspin>
+    
     <div class="people-wrap">
-
-        <div class="person" *ngFor="let person of allPeople">
+        <div class="person" *ngFor="let person of allPeople; let i = index">
             <input type="text" class="name" placeholder="enter name..." [(ngModel)]="person.name" (ngModelChange)="checkButtonState($event)"/>
-            <i-x-circle class="icon" (click)="removePerson($index)"></i-x-circle>
+            <i-x-circle class="icon" (click)="removePerson(i)"></i-x-circle>
         </div>
-
     </div>
-
 
     <button class="butt-add butt-general" (click)="addPerson()" [disabled]="addPersonDisabled">Add <i-plus-circle class="icon"></i-plus-circle></button> 
     <button *ngIf="allPeople.length > 1" class="butt-pick butt-general" (click)="pickPerson()" [disabled]="pickPersonDisabled">Pick!</button>
+
 
 </section>
