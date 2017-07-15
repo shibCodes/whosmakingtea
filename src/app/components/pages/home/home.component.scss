@@ -1,0 +1,40 @@
+@import "../../../../assets/variables";
+@import "../../../../assets/animation.fadeOutUp";
+
+.section-home {
+    width: 100%;
+    height: 100%;
+    background: $backgroundGradient;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .tagline-wrap {
+        max-width: 70%;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 100px;
+        animation-duration: 1s;
+        animation-fill-mode: both;
+
+        h1 {
+            font-family: $fontHeading;
+            text-align: center;
+            font-weight: normal;
+            width: 100%;
+            font-size: 4.5em;
+            margin: 0;
+        }
+
+        .tagline {
+            font-size: 2.25em;
+        }
+
+        &.fadeOutUp {
+            animation-name: fadeOutUp
+        }
+    }
+
+}

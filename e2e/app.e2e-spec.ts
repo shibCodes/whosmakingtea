@@ -1,10 +1,10 @@
-import { WhosmakingteaPage } from './app.po';
+import { ShibcodesioPage } from './app.po';
 
-describe('whosmakingtea App', () => {
-  let page: WhosmakingteaPage;
+describe('shibcodesio App', () => {
+  let page: ShibcodesioPage;
 
   beforeEach(() => {
-    page = new WhosmakingteaPage();
+    page = new ShibcodesioPage();
   });
 
   it('should display message saying app works', () => {
