@@ -1,9 +1,12 @@
 @import "../../../assets/variables";
+@import "../../../assets/animation.moveUp";
 
 .picker {
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation-duration: 1s;
+    animation-fill-mode: both;
     
     .instructions {
         font-size: 1.5em;
@@ -47,6 +50,10 @@
                 &:hover { transform: scale(1.1); }
             }
         }
+    }
+
+    &.moveUp {
+        animation-name: moveUp;
     }
 
 }

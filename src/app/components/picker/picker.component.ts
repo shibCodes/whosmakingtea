@@ -23,12 +23,18 @@ export class PickerComponent {
     instructionMessage: string = "Add a bunch of people and we’ll pick a random person for you!";
     addPersonDisabled: boolean = false;
     pickPersonDisabled: boolean = true;
+    hideIntro: boolean = false;
+    hideIntroInt = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PUBLIC FUNCTIONS
 
     ////////////////////////////////
     addPerson() {
+
+        this.hideIntroInt++;
+
+        if (!this.hideIntro) { console.log("lel"); this.hideIntro = true; }
         
         //var areAllNamesFilled = this.checkNameInputs();
         

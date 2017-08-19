@@ -1,5 +1,6 @@
 @import "../../../../assets/variables";
 @import "../../../../assets/animation.fadeOutUp";
+@import "../../../../assets/animation.moveUp";
 
 .section-home {
     width: 100%;
@@ -33,7 +34,17 @@
         }
 
         &.fadeOutUp {
-            animation-name: fadeOutUp
+            animation-name: fadeOutUp;
+        }
+        
+    }
+
+    .picker-wrap {
+        animation-duration: 1s;
+        animation-fill-mode: both;
+
+        &.moveUp {
+            animation-name: moveUp;
         }
     }
 
