@@ -3,7 +3,7 @@
 
 ////////////////////////////////
 ////////// ANGULAR CORE
-import { Component } from '@angular/core';
+import { Component, ViewChildren } from '@angular/core';
 
 ////////////////////////////////
 ////////// SERVICES
@@ -19,45 +19,70 @@ import { Component } from '@angular/core';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// EXPORT CLASS
 export class PickerComponent {
+
+    ////////////////////////////////
+    @ViewChildren('input') inputElements;
+
+    ////////////////////////////////
+    ngAfterViewInit() {
+        this.inputElements.changes.subscribe((d) => 
+        this.focusElement(d));
+    }
+
+    ////////////////////////////////
     allPeople = [];
     instructionMessage: string = "Add a bunch of people and we’ll pick a random person for you!";
-    addPersonDisabled: boolean = false;
     pickPersonDisabled: boolean = true;
+    hideTagline: boolean = false;
+    numberAdded: number = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PUBLIC FUNCTIONS
 
     ////////////////////////////////
+    ////////////////////////////////
     addPerson() {
         
-        //var areAllNamesFilled = this.checkNameInputs();
+        if (this.numberAdded == 0) { this.hideTagline = true; }
+
+        var personObj = {
+            "name": ""
+        }
+
+        this.allPeople.push(personObj);
         
-        //if (areAllNamesFilled) {
+        this.pickPersonDisabled = true;
 
-            var personObj = {
-                "name": ""
-            }
-
-            this.allPeople.push(personObj);
-            //this.addPersonDisabled = true;
-            
-            this.pickPersonDisabled = true;
-            console.log(this.allPeople);
-        //}
+        console.log(this.allPeople);
+    
+        this.numberAdded++;
 
     }
 
+    ////////////////////////////////
     ////////////////////////////////
     pickPerson() {
+
         var selectedPerson = this.allPeople[Math.floor(Math.random() * this.allPeople.length)];
+
         console.log(selectedPerson);
+
     }
 
     ////////////////////////////////
+    ////////////////////////////////
     removePerson(index) {
+
         this.allPeople.splice(index, 1);
+
+        if (this.allPeople.length == 0) {
+            this.hideTagline = false;
+            this.numberAdded = 0;
+        }
+
     }
 
+    ////////////////////////////////
     ////////////////////////////////
     checkButtonState() {
 
@@ -74,22 +99,12 @@ export class PickerComponent {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PRIVATE FUNCTIONS
 
-    private checkNameInputs() {
 
-        console.log("check name inputs bb");
-        
-        var inputsFilledOut = true;
+    ////////////////////////////////
+    ////////////////////////////////
+    private focusElement(d) {
 
-        for (var i = 0; i < this.allPeople.length; i++) {
-
-            console.log(this.allPeople[i].name);
-            
-            if (this.allPeople[i].name == "") { inputsFilledOut = false; this.addPersonDisabled = true; }
-            
-
-        }
-
-        return inputsFilledOut;
+        if (this.allPeople.length > 0) { d.last.nativeElement.focus(); }
 
     }
 

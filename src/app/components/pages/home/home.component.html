@@ -1,12 +1,16 @@
 <section class="section-home">
+    
+    <div class="content-wrap">
+        
+        <div class="tagline-wrap" [ngClass]="{ 'fadeOutUp': picker.hideTagline, 'fadeInDown': !picker.hideTagline }">
+            <h1>who's making tea?</h1>
+            <div class="tagline">The perfect tool for people picking</div>
+        </div>
 
-    <div class="tagline-wrap">
-        <h1>who's making tea?</h1>
-        <div class="tagline">The perfect tool for picking a person</div>
+        <div class="picker-wrap">
+            <picker></picker>
+        </div>
+
     </div>
-
-    <div class="picker-wrap">
-        <picker></picker>
-    </div>
-
+    
 </section>

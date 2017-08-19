@@ -3,8 +3,9 @@
 
 ////////////////////////////////
 ////////// ANGULAR CORE
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router }   from '@angular/router';
+import { PickerComponent } from '../../picker/picker.component';
 
 ////////////////////////////////
 ////////// SERVICES
@@ -20,6 +21,8 @@ import { Router }   from '@angular/router';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// EXPORT CLASS
 export class PageHomeComponent {
+
+  @ViewChild(PickerComponent) picker: PickerComponent
 
   constructor (
 	  private router: Router
