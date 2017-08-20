@@ -30,6 +30,7 @@ button {
 
   &.butt-general {
     height: 40px;
+    line-height: 35px;
     border: 2px solid white;
     border-radius: 40px;
     color: $colourFontLight;
@@ -55,7 +56,6 @@ button {
   }
 
   &.butt-pick {
-    height: 50px;
     width: 245px;
     font-size: 1.5625em;
     background: $colourFontLight;
@@ -65,11 +65,25 @@ button {
     padding: 0;
     line-height: 50px;
     margin-top: 40px;
+    height: 0;
+    border: 0;
+    overflow: hidden;
+    transition: all 1s;
 
     &:hover {
       background: transparent;
       color: $colourFontLight;
     }
+
+    &.toggleUp {
+      height: 50px;
+      border: 2px solid white;
+    }
+
+  }
+
+  &.butt-pickagain, &.butt-addmore {
+    margin: 0 5px;
   }
 
 

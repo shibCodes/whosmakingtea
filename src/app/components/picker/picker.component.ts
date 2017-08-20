@@ -33,8 +33,13 @@ export class PickerComponent {
     allPeople = [];
     instructionMessage: string = "Add a bunch of people and we’ll pick a random person for you!";
     pickPersonDisabled: boolean = true;
+    pickPersonVisible: boolean = false;
     hideTagline: boolean = false;
     numberAdded: number = 0;
+    hidePicker: boolean = false;
+    hideLoady: boolean = true;
+    hideSelection: boolean = true;
+    selectedPerson: string = "";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PUBLIC FUNCTIONS
@@ -57,13 +62,30 @@ export class PickerComponent {
     
         this.numberAdded++;
 
+        if (this.numberAdded > 1) { this.pickPersonVisible = true; }
+
     }
 
     ////////////////////////////////
     ////////////////////////////////
     pickPerson() {
+        
+        this.hidePicker = true;
+        this.hideSelection = true;
+        this.hideLoady = false;
+
+        this.instructionMessage = "Please wait while we pick the perfect person..."
+
+        console.log("pickPerson(): Hide picker: " + this.hidePicker);
+        console.log("pickPerson(): Hide loader: " + this.hideLoady);
 
         var selectedPerson = this.allPeople[Math.floor(Math.random() * this.allPeople.length)];
+
+        console.log(selectedPerson.name);
+
+        let pickerTimeout = setTimeout(() => {  
+            this.showPickedPerson(selectedPerson.name);
+        }, 1500);
 
         console.log(selectedPerson);
 
@@ -79,6 +101,23 @@ export class PickerComponent {
             this.hideTagline = false;
             this.numberAdded = 0;
         }
+
+        if (this.allPeople.length < 2) {
+            this.pickPersonVisible = false;
+        }
+
+        this.checkButtonState();
+
+    }
+
+    ////////////////////////////////
+    ////////////////////////////////
+    addMorePeople() {
+
+        this.hideSelection = true;
+        this.hidePicker = false;
+
+        this.instructionMessage = "Add a bunch of people and we’ll pick a random person for you!";
 
     }
 
@@ -107,5 +146,22 @@ export class PickerComponent {
         if (this.allPeople.length > 0) { d.last.nativeElement.focus(); }
 
     }
+
+    ////////////////////////////////
+    ////////////////////////////////
+    private showPickedPerson(person) {
+
+        console.log("showPickedPerson(): " + person);
+        
+        this.hideLoady = true;
+        this.hideSelection = false;
+
+        this.instructionMessage = "And the person making tea is...";
+
+        this.selectedPerson = person;
+
+
+    }
+
 
 }

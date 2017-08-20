@@ -1,5 +1,12 @@
 @import "../../../assets/variables";
 
+.picker-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 .picker {
     display: flex;
     flex-direction: column;
@@ -49,4 +56,23 @@
         }
     }
 
+}
+
+.selection-wrap {
+
+    .selected-name {
+        font-size: 5em;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+}
+
+loadyspin {
+    height: 60px;
+    width: 60px;
+}
+
+.hidden {
+    display: none;
 }
