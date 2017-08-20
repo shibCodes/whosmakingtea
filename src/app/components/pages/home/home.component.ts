@@ -26,7 +26,10 @@ export class PageHomeComponent {
 
   constructor (
 	  private router: Router
-  ) { console.log("yolo"); }
+  ) { 
+      console.log("٩(๑❛ᴗ❛๑)۶ Look at you - being sneaky and snoopin' all up in my console logs!");
+      console.log("whosmakingtea was made with love and built using Angular. :)");
+    }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PUBLIC FUNCTIONS

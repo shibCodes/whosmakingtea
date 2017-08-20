@@ -57,8 +57,6 @@ export class PickerComponent {
         this.allPeople.push(personObj);
         
         this.pickPersonDisabled = true;
-
-        console.log(this.allPeople);
     
         this.numberAdded++;
 
@@ -75,9 +73,6 @@ export class PickerComponent {
         this.hideLoady = false;
 
         this.instructionMessage = "Please wait while we pick the perfect person..."
-
-        console.log("pickPerson(): Hide picker: " + this.hidePicker);
-        console.log("pickPerson(): Hide loader: " + this.hideLoady);
 
         var selectedPerson = this.allPeople[Math.floor(Math.random() * this.allPeople.length)];
 
@@ -150,8 +145,6 @@ export class PickerComponent {
     ////////////////////////////////
     ////////////////////////////////
     private showPickedPerson(person) {
-
-        console.log("showPickedPerson(): " + person);
         
         this.hideLoady = true;
         this.hideSelection = false;
