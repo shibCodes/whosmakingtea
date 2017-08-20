@@ -25,6 +25,10 @@
         animation-fill-mode: both;
         height: 150px;
 
+        @media all and (max-width: 450px) {
+            max-width: 90%;
+        }
+
         h1 {
             font-family: $fontHeading;
             text-align: center;
@@ -32,10 +36,26 @@
             width: 100%;
             font-size: 4.5em;
             margin: 0;
+
+            @media all and (max-width: 880px) {
+                font-size: 8vw;
+            }
+
+            @media all and (max-width: 450px) {
+                font-size: 10vw;
+            }
         }
 
         .tagline {
             font-size: 2.25em;
+
+            @media all and (max-width: 880px) {
+                font-size: 4vw;
+            }
+
+            @media all and (max-width: 450px) {
+                font-size: 6vw;
+            }
         }
 
         &.fadeOutUp {

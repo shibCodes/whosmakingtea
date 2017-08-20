@@ -23,10 +23,12 @@
     <div class="selection-wrap" [hidden]="hideSelection">
 
         <div class="selected-name">{{selectedPerson}}</div>
-
-        <button class="butt-pickagain butt-general" (click)="pickPerson()">Pick again <i-refresh-cw class="icon"></i-refresh-cw></button>
-        <button class="butt-addmore butt-general" (click)="addMorePeople()">Add more people <i-plus-circle class="icon"></i-plus-circle></button>
-
+        
+        <div class="button-wrap">
+            <button class="butt-pickagain butt-general" (click)="pickPerson()">Pick again <i-refresh-cw class="icon"></i-refresh-cw></button>
+            <button class="butt-addmore butt-general" (click)="addMorePeople()">Add more people <i-plus-circle class="icon"></i-plus-circle></button>
+        </div>
+        
     </div>
 
 </section>
