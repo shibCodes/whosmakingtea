@@ -23,9 +23,14 @@ import { PickerComponent } from '../../picker/picker.component';
 export class PageHomeComponent {
   @ViewChild(PickerComponent) picker: PickerComponent;
 
+  @ViewChild(PickerComponent) picker: PickerComponent
+
   constructor (
 	  private router: Router
-  ) {}
+  ) { 
+      console.log("٩(๑❛ᴗ❛๑)۶ Look at you - being sneaky and snoopin' all up in my console logs!");
+      console.log("whosmakingtea was made with love and built using Angular. :)");
+    }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PUBLIC FUNCTIONS

@@ -13,11 +13,13 @@ import { HttpModule } from '@angular/http';
 import { IconPlusCircle } from 'angular-feather'; 
 import { IconXCircle } from 'angular-feather';
 import { IconCheckCircle } from 'angular-feather';
+import { IconRefreshCw } from 'angular-feather';
 
 ////////////////////////////////
 ////////// COMPONENTS - NUBS
 import { AppComponent } from './app.component';
 import { PickerComponent } from './components/picker/picker.component';
+import { LoadySpinComponent } from './components/loadyspin/loadyspin.component';
 
 ////////////////////////////////
 ////////// COMPONENTS - PAGES
@@ -37,8 +39,8 @@ import { SpinnyspinComponent } from './components/spinnyspin/spinnyspin.componen
   declarations: [
     AppComponent,
     PickerComponent,
-    PageHomeComponent,
-    SpinnyspinComponent,
+    LoadySpinComponent,
+    PageHomeComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,8 @@ import { SpinnyspinComponent } from './components/spinnyspin/spinnyspin.componen
     AppRoutingModule,
     IconPlusCircle,
     IconXCircle,
-    IconCheckCircle
+    IconCheckCircle,
+    IconRefreshCw
   ],
   providers: [ APIService ],
   bootstrap: [AppComponent]

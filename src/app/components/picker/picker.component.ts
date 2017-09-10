@@ -3,7 +3,7 @@
 
 ////////////////////////////////
 ////////// ANGULAR CORE
-import { Component } from '@angular/core';
+import { Component, ViewChildren } from '@angular/core';
 
 ////////////////////////////////
 ////////// SERVICES
@@ -19,54 +19,108 @@ import { Component } from '@angular/core';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// EXPORT CLASS
 export class PickerComponent {
+
+    ////////////////////////////////
+    @ViewChildren('input') inputElements;
+
+    ////////////////////////////////
+    ngAfterViewInit() {
+        this.inputElements.changes.subscribe((d) => 
+        this.focusElement(d));
+    }
+
+    ////////////////////////////////
     allPeople = [];
     instructionMessage: string = "Add a bunch of people and we’ll pick a random person for you!";
-    addPersonDisabled: boolean = false;
     pickPersonDisabled: boolean = true;
-    hideIntro: boolean = false;
-    hideIntroInt = 0;
+    pickPersonVisible: boolean = false;
+    hideTagline: boolean = false;
+    numberAdded: number = 0;
+    hidePicker: boolean = false;
+    hideLoady: boolean = true;
+    hideSelection: boolean = true;
+    selectedPerson: string = "";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PUBLIC FUNCTIONS
 
     ////////////////////////////////
+    ////////////////////////////////
     addPerson() {
 
-        this.hideIntroInt++;
+        //this.hideIntroInt++;
 
-        if (!this.hideIntro) { console.log("lel"); this.hideIntro = true; }
+        //if (!this.hideIntro) { console.log("lel"); this.hideIntro = true; }
         
-        //var areAllNamesFilled = this.checkNameInputs();
+        if (this.numberAdded == 0) { this.hideTagline = true; }
+
+        var personObj = {
+            "name": ""
+        }
+
+        this.allPeople.push(personObj);
         
-        //if (areAllNamesFilled) {
+        this.pickPersonDisabled = true;
+    
+        this.numberAdded++;
 
-            var personObj = {
-                "name": ""
-            }
-
-            this.allPeople.push(personObj);
-            //this.addPersonDisabled = true;
-            
-            this.pickPersonDisabled = true;
-            console.log(this.allPeople);
-        //}
+        if (this.numberAdded > 1) { this.pickPersonVisible = true; }
 
     }
 
     ////////////////////////////////
+    ////////////////////////////////
     pickPerson() {
+        
+        this.hidePicker = true;
+        this.hideSelection = true;
+        this.hideLoady = false;
+
+        this.instructionMessage = "Please wait while we pick the perfect person..."
+
         var selectedPerson = this.allPeople[Math.floor(Math.random() * this.allPeople.length)];
+
+        console.log(selectedPerson.name);
+
+        let pickerTimeout = setTimeout(() => {  
+            this.showPickedPerson(selectedPerson.name);
+        }, 1500);
+
         console.log(selectedPerson);
+
     }
 
+    ////////////////////////////////
     ////////////////////////////////
     removePerson(index) {
 
-        console.log(index);
-
         this.allPeople.splice(index, 1);
+
+        if (this.allPeople.length == 0) {
+            this.hideTagline = false;
+            this.numberAdded = 0;
+        }
+
+        if (this.allPeople.length < 2) {
+            this.pickPersonVisible = false;
+        }
+
+        this.checkButtonState();
+
     }
 
+    ////////////////////////////////
+    ////////////////////////////////
+    addMorePeople() {
+
+        this.hideSelection = true;
+        this.hidePicker = false;
+
+        this.instructionMessage = "Add a bunch of people and we’ll pick a random person for you!";
+
+    }
+
+    ////////////////////////////////
     ////////////////////////////////
     checkButtonState() {
 
@@ -83,23 +137,28 @@ export class PickerComponent {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PRIVATE FUNCTIONS
 
-    private checkNameInputs() {
 
-        console.log("check name inputs bb");
-        
-        var inputsFilledOut = true;
+    ////////////////////////////////
+    ////////////////////////////////
+    private focusElement(d) {
 
-        for (var i = 0; i < this.allPeople.length; i++) {
-
-            console.log(this.allPeople[i].name);
-            
-            if (this.allPeople[i].name == "") { inputsFilledOut = false; this.addPersonDisabled = true; }
-            
-
-        }
-
-        return inputsFilledOut;
+        if (this.allPeople.length > 0) { d.last.nativeElement.focus(); }
 
     }
+
+    ////////////////////////////////
+    ////////////////////////////////
+    private showPickedPerson(person) {
+        
+        this.hideLoady = true;
+        this.hideSelection = false;
+
+        this.instructionMessage = "And the person making tea is...";
+
+        this.selectedPerson = person;
+
+
+    }
+
 
 }
