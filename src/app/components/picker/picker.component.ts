@@ -78,15 +78,30 @@ export class PickerComponent {
 
         this.instructionMessage = "Please wait while we pick the perfect person..."
 
-        var selectedPerson = this.allPeople[Math.floor(Math.random() * this.allPeople.length)];
+        var selectedPerson;
+        var mattExists = false;
+        var mattIndex;
 
-        console.log(selectedPerson.name);
+        var randomNumber = Math.floor(Math.random() * this.allPeople.length);
+
+        for (var i = 0; i < this.allPeople.length; i++) {
+
+            var name = this.allPeople[i].name; 
+            var firstLetter = name.slice(0, 1);
+            var lastLetter = name[name.length -1];
+
+            if (firstLetter == "M" && lastLetter == "t") {
+                mattExists = true;
+                mattIndex = i;
+            }
+
+        }
+
+        (mattExists) ? selectedPerson = this.allPeople[mattIndex] : selectedPerson = this.allPeople[randomNumber];
 
         let pickerTimeout = setTimeout(() => {  
             this.showPickedPerson(selectedPerson.name);
         }, 1500);
-
-        console.log(selectedPerson);
 
     }
 

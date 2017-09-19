@@ -23,8 +23,6 @@ import { PickerComponent } from '../../picker/picker.component';
 export class PageHomeComponent {
   @ViewChild(PickerComponent) picker: PickerComponent;
 
-  @ViewChild(PickerComponent) picker: PickerComponent
-
   constructor (
 	  private router: Router
   ) { 
