@@ -32,7 +32,7 @@ import { AppRoutingModule }			from './modules/approute.module';
 ////////////////////////////////
 ////////// SERVICES
 import { APIService } from './services/api.service';
-import { SpinnyspinComponent } from './components/spinnyspin/spinnyspin.component';
+//import { SpinnyspinComponent } from './components/spinnyspin/spinnyspin.component';
 
 
 @NgModule({

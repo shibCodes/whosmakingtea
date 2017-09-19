@@ -87,10 +87,10 @@ export class PickerComponent {
         for (var i = 0; i < this.allPeople.length; i++) {
 
             var name = this.allPeople[i].name; 
-            var firstLetter = name.slice(0, 1);
-            var lastLetter = name[name.length -1];
+            var firstLetter = name.slice(0, 1).toLowerCase();
+            var lastLetter = name[name.length -1].toLowerCase();
 
-            if (firstLetter == "M" && lastLetter == "t") {
+            if (firstLetter == "m" && lastLetter == "t") {
                 mattExists = true;
                 mattIndex = i;
             }
