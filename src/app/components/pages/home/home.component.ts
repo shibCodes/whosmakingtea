@@ -6,6 +6,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router }   from '@angular/router';
 import { PickerComponent } from '../../picker/picker.component';
+import { LoginHeaderComponent } from '../../loginheader/loginheader.component';
 
 ////////////////////////////////
 ////////// SERVICES
@@ -22,13 +23,11 @@ import { PickerComponent } from '../../picker/picker.component';
 //////////////////////////////// EXPORT CLASS
 export class PageHomeComponent {
   @ViewChild(PickerComponent) picker: PickerComponent;
+  @ViewChild(LoginHeaderComponent) loginheader: LoginHeaderComponent;
 
   constructor (
 	  private router: Router
-  ) { 
-      console.log("٩(๑❛ᴗ❛๑)۶ Look at you - being sneaky and snoopin' all up in my console logs!");
-      console.log("whosmakingtea was made with love and built using Angular. :)");
-    }
+  ) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PUBLIC FUNCTIONS

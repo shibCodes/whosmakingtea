@@ -13,6 +13,13 @@
 
     .content-wrap {
         width: 100%;
+        animation-duration: 1s;
+        animation-fill-mode: both;
+
+        &.fadeOutUp {
+            animation-name: fadeOutUp;
+        }
+
     }
 
     .tagline-wrap {

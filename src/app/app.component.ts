@@ -18,4 +18,9 @@ import { Router }		from '@angular/router';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// EXPORT CLASS
-export class AppComponent {}
+export class AppComponent {
+	constructor(){
+		console.log("٩(๑❛ᴗ❛๑)۶ Look at you - being sneaky and snoopin' all up in my console logs!");
+		console.log("whosmakingtea was made with love and built using Angular. :)");
+	}
+}
