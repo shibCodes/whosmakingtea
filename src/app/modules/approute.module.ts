@@ -7,14 +7,16 @@ import { NgModule }						from '@angular/core';
 import { RouterModule, Routes }			from '@angular/router';
 
 ////////////////////////////////
-////////// ANGULAR CORE
+////////// PAGES
 import { PageHomeComponent }			from '../components/pages/home/home.component';
+import { PageRegisterComponent }	from '../components/pages/register/register.component';
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SETUP ROUTES
 const routes: Routes = [
-	{ path: '',		component: PageHomeComponent }
+  { path: '',		component: PageHomeComponent },
+  { path: 'register',		component: PageRegisterComponent }
 ];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

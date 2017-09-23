@@ -1,0 +1,27 @@
+<loginheader></loginheader>
+
+<section class="section-register"> 
+        
+        <div class="content-wrap">
+
+            <h1>Register</h1>
+            <p>Registering allows you to save and create multiple lists of people. We'll also keep track of who's been picked so they'll have less of a chance of being picked next time!</p>
+            
+            <div class="input-wrap">
+                <div class="field">
+                    <input #input type="text" class="name" placeholder="username..." [(ngModel)]="user.username" />
+                </div>
+                <div class="field">
+                    <input #input type="password" class="password" placeholder="password..." [(ngModel)]="user.password" />
+                </div>
+                <div class="field">
+                    <input #input type="password" class="password" placeholder="confirm password..." [(ngModel)]="user.confirm" />
+                </div>
+            </div>
+
+            <button class="butt-general butt-register" (click)="register()">Register!</button>
+            <button class="butt-general butt-cancel" (click)="cancel()">Cancel</button>
+
+        </div>
+        
+    </section>

@@ -1,6 +1,8 @@
-<section class="section-home">
+<loginheader></loginheader>
+
+<section class="section-home"> 
     
-    <div class="content-wrap">
+    <div class="content-wrap" [ngClass]="{ 'fadeOutUp': loginheader.hideTagline }">
         
         <div class="tagline-wrap" [ngClass]="{ 'fadeOutUp': picker.hideTagline, 'fadeInDown': !picker.hideTagline }">
             <h1>who's making tea?</h1>
