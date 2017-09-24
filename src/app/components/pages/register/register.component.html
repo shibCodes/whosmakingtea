@@ -2,10 +2,10 @@
 
 <section class="section-register"> 
         
-        <div class="content-wrap">
+        <div class="content-wrap" [ngClass]="{ 'fadeOutUp': hideRegister || loginheader.hideTagline, 'fadeInDown': !hideRegister && !loginheader.hideTagline }">
 
             <h1>Register</h1>
-            <p>Registering allows you to save and create multiple lists of people. We'll also keep track of who's been picked so they'll have less of a chance of being picked next time!</p>
+            <p>Registering allows you to create and save multiple lists of people. We'll also keep track of who's been picked so they'll have less of a chance of being picked next time!</p>
             
             <div class="input-wrap">
                 <div class="field">

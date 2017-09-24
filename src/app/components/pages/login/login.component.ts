@@ -10,46 +10,92 @@ import { LoginHeaderComponent } from '../../loginheader/loginheader.component';
 
 ////////////////////////////////
 ////////// SERVICES
+import { APIService } from '../../../services/api.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SETUP COMPONENT
 @Component({
-    selector: 'register-page',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss']
+    selector: 'login-page',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss']
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// EXPORT CLASS
-export class PageRegisterComponent {
+export class PageLoginComponent {
     @ViewChild(LoginHeaderComponent) loginheader: LoginHeaderComponent;
-    
-    hideRegister:boolean = false;
+
+    hideLogin:boolean = false;
+    loginDisabled:boolean = true;
+    errorMessage:string;
+    showError:boolean = false;
     user = {
         "username": "",
         "password": ""
     }
 
     constructor (
-        private router: Router
+        private router: Router,
+        private apiService: APIService
     ) {}   
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////// PUBLIC FUNCTIONS
 
+    login() {
+
+        this.showError = false;
+
+        this.apiService.loginUser(this.user)
+        .then(this.goToDashboard.bind(this));
+
+    }
+
     ////////////////////////////////
     cancel() {
 
-        this.hideRegister = true;
+        this.hideLogin = true;
 
         let pickerTimeout = setTimeout(() => {  
             this.router.navigate(['/']); 
         }, 1000);
     }
 
+    ////////////////////////////////
+    ////////////////////////////////
+    checkButtonState() {
+        
+        var notFilledOut = false;
+        
+        var username = this.user.username;
+        var password = this.user.password;
+
+        (username == "" || password == "") ? notFilledOut = true : notFilledOut = false;
+
+        (!notFilledOut) ? this.loginDisabled = false : this.loginDisabled = true;
+
+    }
+    
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////// PRIVATE FUNCTIONS
 
+    private goToDashboard(res) {
 
+        console.log("error: ", error);
+        console.log("aw yeah bb");
+        console.log(res);
+
+        var error = res.error;
+
+        if (error != undefined) { 
+            this.showError = true;
+            this.errorMessage = res.reasons[0];
+        }
+        else {
+            this.apiService.setAuthToken(res.auth_token);
+        }
+        
+    }
 
 }

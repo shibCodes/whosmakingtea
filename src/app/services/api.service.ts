@@ -6,6 +6,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Router }   from '@angular/router';
+import { CookieService } from 'ng2-cookies';
 
 ////////////////////////////////
 ////////// RXJS
@@ -20,13 +21,15 @@ import 'rxjs/add/operator/toPromise';
 export class APIService {
 	authToken: string;
 
-	private baseURL = 'http://sane-api-staging.herokuapp.com/';
+	//private baseURL = 'http://sane-api-staging.herokuapp.com/';
+	private baseURL = 'http://192.168.33.10/api/';
 	private headers = new Headers();
 	private options;
 
 	constructor(
 		private http: Http,
-		private router: Router
+		private router: Router,
+		private cookieService: CookieService
 	) { }
 
 
@@ -35,12 +38,62 @@ export class APIService {
 
 
 	////////////////////////////////
-  	// Get all projects, bb!
+	// TODO: remove
 	getProjects() {
     	return this.http.get('/assets/projects.json')
 						.toPromise()
                   		.then(this.extractData)
                   		.catch(this.handleError);
+	}
+
+	////////////////////////////////
+	loginUser(userObj: object) {
+		return this.http.post(this.baseURL + 'login', userObj)
+						.toPromise()
+						.then(this.extractData)
+						.catch(this.handleError);
+	}
+
+	////////////////////////////////
+	registerUser(userObj: object) {
+		return this.http.post(this.baseURL + 'register', userObj)
+						.toPromise()
+						.then(this.extractData)
+						.catch(this.handleError);
+	}
+
+	////////////////////////////////
+  	// Set the auth token so we can use it again and again
+	  setAuthToken(auth_token: string) {
+		
+		// Set auth token
+		this.authToken = auth_token;
+		this.cookieService.set("whosmakingtea", auth_token);
+		
+		// Add headers / options
+		this.headers.append('Authorization', 'Bearer ' + this.authToken); 
+		this.options = new RequestOptions({ headers: this.headers });
+
+	}
+
+	////////////////////////////////
+  	// Check if we have an auth token set and if not REJECT that shizz
+	  checkAuthToken() {
+
+		var cookieAuth = this.cookieService.get("whosmakingtea");
+
+		if (this.authToken == undefined && cookieAuth != "") {
+			this.authToken = cookieAuth;
+		}
+
+		if (cookieAuth == "" && this.authToken == undefined) {
+			this.router.navigate(['/login']);
+		}
+		
+
+		console.log("cookie: ", cookieAuth);
+
+		//if (this.authToken == undefined) { this.router.navigate(['/login']); }
 	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,18 +105,12 @@ export class APIService {
 		return body;
 	}
 
-	private handleError (error: Response | any) {
-		// In a real world app, you might use a remote logging infrastructure
-		let errMsg: string;
-		if (error instanceof Response) {
-		const body = error.json() || '';
-		const err = body.reasons[0] || JSON.stringify(body);
-		errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-		} else {
-		errMsg = error.message ? error.message : error.toString();
-		}
-		console.error(errMsg);
-		return Observable.throw(errMsg);
+	private handleError (error: Response) {
+
+		let body = error.json();
+
+		return body;
+		
 	}
 
 }

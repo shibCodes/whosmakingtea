@@ -3,7 +3,7 @@
 
 ////////////////////////////////
 ////////// ANGULAR CORE
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router }   from '@angular/router';
 
 ////////////////////////////////
@@ -19,17 +19,26 @@ import { Router }   from '@angular/router';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// EXPORT CLASS
-export class LoginHeaderComponent {
+export class LoginHeaderComponent implements OnInit {
     hideTagline:boolean = false;
-
+    currentUrl:string;
+    
     constructor (
         private router: Router
-    ) {}    
+    ) {}   
+
+    ngOnInit() {
+        this.currentUrl = this.router.url;
+    }
 
     ////////////////////////////////
     register() {
 
-        this.hideTagline = true;
+        console.log("current: ", this.currentUrl);
+
+        (this.currentUrl == '/register') ? this.hideTagline = false : this.hideTagline = true;
+
+        console.log("hide: ", this.hideTagline);
 
         let pickerTimeout = setTimeout(() => {  
             this.router.navigate(['/register']); 
@@ -39,7 +48,16 @@ export class LoginHeaderComponent {
 
     ////////////////////////////////
     login() {
-        this.router.navigate(['/login']);
+
+        console.log("current: ", this.currentUrl);
+
+        (this.currentUrl == '/login') ? this.hideTagline = false : this.hideTagline = true;
+
+        console.log("hide: ", this.hideTagline);
+
+        let pickerTimeout = setTimeout(() => {  
+            this.router.navigate(['/login']); 
+        }, 1000);
     }
 
 }

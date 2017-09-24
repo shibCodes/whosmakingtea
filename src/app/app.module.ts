@@ -14,6 +14,7 @@ import { IconPlusCircle } from 'angular-feather';
 import { IconXCircle } from 'angular-feather';
 import { IconCheckCircle } from 'angular-feather';
 import { IconRefreshCw } from 'angular-feather';
+import { IconAlertCircle } from 'angular-feather';
 
 ////////////////////////////////
 ////////// COMPONENTS - NUBS
@@ -26,6 +27,7 @@ import { LoginHeaderComponent } from './components/loginheader/loginheader.compo
 ////////// COMPONENTS - PAGES
 import { PageHomeComponent } from './components/pages/home/home.component';
 import { PageRegisterComponent } from './components/pages/register/register.component';
+import { PageLoginComponent } from './components/pages/login/login.component';
 
 ////////////////////////////////
 ////////// MODULES
@@ -34,6 +36,7 @@ import { AppRoutingModule }			from './modules/approute.module';
 ////////////////////////////////
 ////////// SERVICES
 import { APIService } from './services/api.service';
+import { CookieService } from 'ng2-cookies';
 
 
 @NgModule({
@@ -43,7 +46,8 @@ import { APIService } from './services/api.service';
     LoadySpinComponent,
     LoginHeaderComponent,
     PageHomeComponent,
-    PageRegisterComponent
+    PageRegisterComponent,
+    PageLoginComponent
   ],
   imports: [
     BrowserModule,
@@ -53,9 +57,13 @@ import { APIService } from './services/api.service';
     IconPlusCircle,
     IconXCircle,
     IconCheckCircle,
-    IconRefreshCw
+    IconRefreshCw,
+    IconAlertCircle
   ],
-  providers: [ APIService ],
+  providers: [ 
+    APIService, 
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
