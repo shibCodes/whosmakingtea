@@ -1,0 +1,17 @@
+<section class="userlist">
+
+    <div class="users-wrap">
+
+        <div class="user" *ngFor="let user of selectedList.items; let i = index">
+            <div class="teasmade-graph"></div>
+            <div class="user-deets">
+                <i-check-circle class="icon"></i-check-circle>
+                <input type="text" class="name" [(ngModel)]="user.name" disabled/>
+                <i-edit-3 class="icon edit"></i-edit-3>
+                <i-x-circle class="icon"></i-x-circle>
+            </div>
+        </div>
+
+    </div>
+
+</section>

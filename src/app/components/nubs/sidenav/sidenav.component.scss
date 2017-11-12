@@ -43,7 +43,20 @@ nav {
                 &:hover {
                     background: $colourGradientStart;
                 }
+
+                &.selected {
+                    background: $colourGradientStart;
+                }
+
+                 
             }
         }
+    }
+
+    .butt-add {
+        display: block;
+        width: 145px;
+        margin: 20px auto;
+        
     }
 }

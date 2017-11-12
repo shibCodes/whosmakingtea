@@ -13,8 +13,10 @@ import { HttpModule } from '@angular/http';
 import { IconPlusCircle } from 'angular-feather'; 
 import { IconXCircle } from 'angular-feather';
 import { IconCheckCircle } from 'angular-feather';
+import { IconCircle } from 'angular-feather';
 import { IconRefreshCw } from 'angular-feather';
 import { IconAlertCircle } from 'angular-feather';
+import { IconEdit3 } from 'angular-feather';
 
 ////////////////////////////////
 ////////// COMPONENTS - NUBS
@@ -23,6 +25,7 @@ import { PickerComponent } from './components/nubs/picker/picker.component';
 import { LoadySpinComponent } from './components/nubs/loadyspin/loadyspin.component';
 import { LoginHeaderComponent } from './components/nubs/loginheader/loginheader.component';
 import { SideNavComponent } from './components/nubs/sidenav/sidenav.component';
+import { UserListComponent } from './components/nubs/userlist/userlist.component';
 
 ////////////////////////////////
 ////////// COMPONENTS - PAGES
@@ -48,6 +51,7 @@ import { CookieService } from 'ng2-cookies';
     LoadySpinComponent,
     LoginHeaderComponent,
     SideNavComponent,
+    UserListComponent,
     PageHomeComponent,
     PageRegisterComponent,
     PageLoginComponent,
@@ -61,8 +65,10 @@ import { CookieService } from 'ng2-cookies';
     IconPlusCircle,
     IconXCircle,
     IconCheckCircle,
+    IconCircle,
     IconRefreshCw,
-    IconAlertCircle
+    IconAlertCircle,
+    IconEdit3
   ],
   providers: [ 
     APIService, 

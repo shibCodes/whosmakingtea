@@ -11,13 +11,27 @@ import { Component, Input } from '@angular/core';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SETUP COMPONENT
 @Component({
-    selector: 'sidenav',
-    templateUrl: './sidenav.component.html',
-    styleUrls: ['./sidenav.component.scss']
+    selector: 'userlist',
+    templateUrl: './userlist.component.html',
+    styleUrls: ['./userlist.component.scss']
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// EXPORT CLASS
-export class SideNavComponent {
-    @Input() lists;
+export class UserListComponent {
+    @Input() selectedList;
+
+    /*list = [
+        {
+            "name": "Shib",
+            "tea_made": 1,
+            "tea_drank": 1
+        },
+        {
+            "name": "Joel",
+            "tea_made": 0,
+            "tea_drank": 0
+        }
+    ]*/
+
 }

@@ -4,11 +4,11 @@
         <div class="welcome-intro">Here are your saved lists...</div>
     </div>
     <div class="sidebar-lists">
-        <div class="sidebar-list">
-            <a class="list">Moo..?</a>
-        </div>
-        <div class="sidebar-list">
-            <a class="list">Fam fam</a>
+        <div class="sidebar-list" *ngFor="let list of lists; let i = index">
+            <a class="list" [ngClass]="{'selected': list.selected}">{{list.list_name}}</a>
         </div>
     </div>
+    
+    <button class="butt-add butt-general" (click)="addList()">New List <i-plus-circle class="icon"></i-plus-circle></button> 
+
 </nav>

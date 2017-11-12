@@ -63,6 +63,14 @@ export class APIService {
 	}
 
 	////////////////////////////////
+	getUserLists(username: string) {
+		return this.http.get(this.baseURL + 'getuserlists?username=' + username, this.options)
+						.toPromise()
+						.then(this.extractData)
+						.catch(this.handleError);
+	}
+
+	////////////////////////////////
   	// Set the auth token so we can use it again and again
 	  setAuthToken(auth_token: string) {
 		

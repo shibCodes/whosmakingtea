@@ -94,6 +94,8 @@ export class PageLoginComponent {
         }
         else {
             this.apiService.setAuthToken(res.auth_token);
+            localStorage.setItem("username", this.user.username);
+            this.router.navigate(['dashboard']); 
         }
         
     }
