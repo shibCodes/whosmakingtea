@@ -1,0 +1,49 @@
+@import "../../../../assets/variables";
+
+nav {
+    height: 100%;
+    width: 280px;
+    border-right: 2px solid $colourFontLight;  
+
+    .sidebar-welcome {
+        text-align: center;
+        padding: 2.125em 0;
+
+        .welcome-name {
+            font-size: 2.25em;
+        }
+
+        .welcome-intro {
+            font-size: 1.125em;
+        }
+    }
+
+    .sidebar-lists {
+        display: block;
+        width: 100%;
+
+        .sidebar-list {
+            display: block;
+            width: 100%;
+            overflow: hidden;
+            height: 48px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+
+            .list {
+                width: 100%;
+                height: 100%;
+                display: block;
+                font-size: 1.5em;
+                font-weight: 600;
+                line-height: 48px;
+                padding-left: 20px;
+                cursor: pointer;
+                transition: all 0.2s;
+
+                &:hover {
+                    background: $colourGradientStart;
+                }
+            }
+        }
+    }
+}

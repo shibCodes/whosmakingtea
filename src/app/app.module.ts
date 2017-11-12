@@ -19,15 +19,17 @@ import { IconAlertCircle } from 'angular-feather';
 ////////////////////////////////
 ////////// COMPONENTS - NUBS
 import { AppComponent } from './app.component';
-import { PickerComponent } from './components/picker/picker.component';
-import { LoadySpinComponent } from './components/loadyspin/loadyspin.component';
-import { LoginHeaderComponent } from './components/loginheader/loginheader.component';
+import { PickerComponent } from './components/nubs/picker/picker.component';
+import { LoadySpinComponent } from './components/nubs/loadyspin/loadyspin.component';
+import { LoginHeaderComponent } from './components/nubs/loginheader/loginheader.component';
+import { SideNavComponent } from './components/nubs/sidenav/sidenav.component';
 
 ////////////////////////////////
 ////////// COMPONENTS - PAGES
 import { PageHomeComponent } from './components/pages/home/home.component';
 import { PageRegisterComponent } from './components/pages/register/register.component';
 import { PageLoginComponent } from './components/pages/login/login.component';
+import { PageDashboardComponent } from './components/pages/dashboard/dashboard.component';
 
 ////////////////////////////////
 ////////// MODULES
@@ -45,9 +47,11 @@ import { CookieService } from 'ng2-cookies';
     PickerComponent,
     LoadySpinComponent,
     LoginHeaderComponent,
+    SideNavComponent,
     PageHomeComponent,
     PageRegisterComponent,
-    PageLoginComponent
+    PageLoginComponent,
+    PageDashboardComponent
   ],
   imports: [
     BrowserModule,

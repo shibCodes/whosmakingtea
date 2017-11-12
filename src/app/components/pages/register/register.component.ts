@@ -6,7 +6,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { LoginHeaderComponent } from '../../loginheader/loginheader.component';
+import { LoginHeaderComponent } from '../../nubs/loginheader/loginheader.component';
 
 ////////////////////////////////
 ////////// SERVICES

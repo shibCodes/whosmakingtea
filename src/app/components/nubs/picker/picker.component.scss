@@ -1,5 +1,5 @@
-@import "../../../assets/variables";
-@import "../../../assets/animation.fadeOut";
+@import "../../../../assets/variables";
+@import "../../../../assets/animation.fadeOut";
 
 .picker-wrap {
     display: flex;
@@ -56,7 +56,7 @@
             
             .name {
                 font-size: 1.5em;
-                font-weight: 700;
+                font-weight: 600;
                 color: $colourFontLight;
                 font-family: $fontBody;
                 width: 100%;

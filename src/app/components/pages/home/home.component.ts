@@ -5,8 +5,8 @@
 ////////// ANGULAR CORE
 import { Component, ViewChild } from '@angular/core';
 import { Router }   from '@angular/router';
-import { PickerComponent } from '../../picker/picker.component';
-import { LoginHeaderComponent } from '../../loginheader/loginheader.component';
+import { PickerComponent } from '../../nubs/picker/picker.component';
+import { LoginHeaderComponent } from '../../nubs/loginheader/loginheader.component';
 
 ////////////////////////////////
 ////////// SERVICES
