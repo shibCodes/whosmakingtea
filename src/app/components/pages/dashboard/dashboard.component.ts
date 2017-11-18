@@ -30,10 +30,13 @@ export class PageDashboardComponent implements OnInit {
 
     ngOnInit() {
        
+        this.apiService.checkAuthToken();
+        
         this.username = localStorage.getItem("username");
 
         this.apiService.getUserLists(this.username)
-            .then(this.showList.bind(this));
+        .then(this.showList.bind(this));
+        
 
     }
 
@@ -47,9 +50,9 @@ export class PageDashboardComponent implements OnInit {
             (i == 0) ? selected = true : selected = false; 
 
             var listObj = {
-                "list_name": res[0].lists_table_name,
-                "list_id": res[0].lists_table_id,
-                "items": JSON.parse(res[0].lists_table_items),
+                "list_name": res[i].lists_table_name,
+                "list_id": res[i].lists_table_id,
+                "items": JSON.parse(res[i].lists_table_items),
                 "selected": selected
             }
 
@@ -59,8 +62,18 @@ export class PageDashboardComponent implements OnInit {
 
         }
 
-        console.log(this.allLists);
-        console.log(this.selectedList);
+    }
+
+    ////////////////////////////////
+    changeSelected(selectedListId) {
+        
+        for (var i = 0; i < this.allLists.length; i++) {
+
+            if (selectedListId == this.allLists[i].list_id) {
+                this.selectedList = this.allLists[i];
+            }
+
+        }
 
     }
 

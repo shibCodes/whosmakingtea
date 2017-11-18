@@ -13,6 +13,7 @@ import { HttpModule } from '@angular/http';
 import { IconPlusCircle } from 'angular-feather'; 
 import { IconXCircle } from 'angular-feather';
 import { IconCheckCircle } from 'angular-feather';
+import { IconSave } from 'angular-feather';
 import { IconCircle } from 'angular-feather';
 import { IconRefreshCw } from 'angular-feather';
 import { IconAlertCircle } from 'angular-feather';
@@ -43,6 +44,10 @@ import { AppRoutingModule }			from './modules/approute.module';
 import { APIService } from './services/api.service';
 import { CookieService } from 'ng2-cookies';
 
+////////////////////////////////
+////////// DIRECTIVES
+import { FocusDirective } from './directives/focus/focus.directive';
+
 
 @NgModule({
   declarations: [
@@ -55,7 +60,8 @@ import { CookieService } from 'ng2-cookies';
     PageHomeComponent,
     PageRegisterComponent,
     PageLoginComponent,
-    PageDashboardComponent
+    PageDashboardComponent,
+    FocusDirective
   ],
   imports: [
     BrowserModule,
@@ -65,6 +71,7 @@ import { CookieService } from 'ng2-cookies';
     IconPlusCircle,
     IconXCircle,
     IconCheckCircle,
+    IconSave,
     IconCircle,
     IconRefreshCw,
     IconAlertCircle,

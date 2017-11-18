@@ -3,7 +3,7 @@
 
 ////////////////////////////////
 ////////// ANGULAR CORE
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChildren } from '@angular/core';
 
 ////////////////////////////////
 ////////// SERVICES
@@ -21,6 +21,7 @@ import { Component, Input } from '@angular/core';
 export class UserListComponent {
     @Input() selectedList;
 
+
     /*list = [
         {
             "name": "Shib",
@@ -33,5 +34,20 @@ export class UserListComponent {
             "tea_drank": 0
         }
     ]*/
+    
+    ////////////////////////////////
+    addPerson() {
+
+        var userObj = {
+            "name": "",
+            "tea_made": 0,
+            "tea_drank": 0
+        }
+
+        this.selectedList.items.push(userObj);
+
+    }
+
+
 
 }

@@ -51,6 +51,48 @@ nav {
                  
             }
         }
+
+    }
+
+    .sidebar-add {
+        width: 100%;
+        position: relative;
+
+        input {
+            width: 100%;
+            overflow: hidden;
+            height: 48px;
+            line-height: 50px;
+            padding-left: 20px;
+            padding-right: 40px;
+            border: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            -webkit-appearance: none;
+            background: none;
+            outline: none;
+            color: $colourFontLight;
+            font-family: $fontBody;
+            font-size: 1.5em;
+            font-weight: 600;
+            &::-webkit-input-placeholder { 
+                color: rgba(255, 255, 255, 0.2); 
+                font-style: italic;
+            }
+        }
+
+        .icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            height: 24px;
+            padding-right: 10px;
+            cursor: pointer;
+            transition: all 0.5s;
+
+            &:hover { transform: scale(1.1); }
+        }
     }
 
     .butt-add {

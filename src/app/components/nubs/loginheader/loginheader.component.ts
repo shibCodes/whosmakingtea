@@ -22,6 +22,7 @@ import { Router }   from '@angular/router';
 export class LoginHeaderComponent implements OnInit {
     hideTagline:boolean = false;
     currentUrl:string;
+    showLogout:boolean = false;
     
     constructor (
         private router: Router
@@ -29,6 +30,10 @@ export class LoginHeaderComponent implements OnInit {
 
     ngOnInit() {
         this.currentUrl = this.router.url;
+
+        if (this.currentUrl == '/dashboard') {
+            this.showLogout = true;
+        }
     }
 
     ////////////////////////////////

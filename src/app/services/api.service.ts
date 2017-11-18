@@ -71,8 +71,24 @@ export class APIService {
 	}
 
 	////////////////////////////////
+	addNewList(listObj: object) {
+		return this.http.post(this.baseURL + 'addnewlist', listObj, this.options)
+						.toPromise()
+						.then(this.extractData)
+						.catch(this.handleError);
+	}
+
+	////////////////////////////////
+	updateList(listObj: object) {
+		return this.http.post(this.baseURL + 'updatelist', listObj, this.options)
+						.toPromise()
+						.then(this.extractData)
+						.catch(this.handleError);
+	}
+
+	////////////////////////////////
   	// Set the auth token so we can use it again and again
-	  setAuthToken(auth_token: string) {
+	setAuthToken(auth_token: string) {
 		
 		// Set auth token
 		this.authToken = auth_token;
@@ -86,22 +102,18 @@ export class APIService {
 
 	////////////////////////////////
   	// Check if we have an auth token set and if not REJECT that shizz
-	  checkAuthToken() {
+	checkAuthToken() {
 
 		var cookieAuth = this.cookieService.get("whosmakingtea");
 
 		if (this.authToken == undefined && cookieAuth != "") {
-			this.authToken = cookieAuth;
+			this.setAuthToken(cookieAuth);
 		}
 
 		if (cookieAuth == "" && this.authToken == undefined) {
 			this.router.navigate(['/login']);
 		}
 		
-
-		console.log("cookie: ", cookieAuth);
-
-		//if (this.authToken == undefined) { this.router.navigate(['/login']); }
 	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
