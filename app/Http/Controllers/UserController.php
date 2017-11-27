@@ -117,7 +117,7 @@ class UserController extends Controller
 			$newItem = app('db')->insert("INSERT INTO users (".implode($fieldsToWrite, ",").") VALUES (".implode($fieldQMarks, ",").")", $fieldData);
 			
 			// And finally return the user's id.
-			$insertId = app('db')->select("SELECT currval(pg_get_serial_sequence('users','id'))");
+			$insertId = app('db')->select("SELECT currval(pg_get_serial_sequence('users','users_table_id'))");
 			return $insertId[0]->currval;
 		}
 		
