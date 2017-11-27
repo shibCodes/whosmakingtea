@@ -93,7 +93,45 @@ class UserController extends Controller
 
 	}
 
+	    //////////////////////////////////////////////////////////////////
+    // Add / Edit user in DB
+    private function addUserToDB($input, $method) {
+		
+		// Now write whatever data we have about the user
+		$possibleFields = ['users_table_username', 'users_table_password'];		
+		$fieldsToWrite    = [];
+		$fieldQMarks    = [];
+		$fieldData        = [];
+		foreach ($possibleFields as $possibleField) {
+			if (isset($input[$possibleField])) {
+				array_push($fieldsToWrite, $possibleField);
+				array_push($fieldQMarks, "?");
+				array_push($fieldData, $input[$possibleField]);
+			}
+		}
 
+		// Now write to database
+		if ($method == "create")
+		{
+			// Create the new user
+			$newItem = app('db')->insert("INSERT INTO users (".implode($fieldsToWrite, ",").") VALUES (".implode($fieldQMarks, ",").")", $fieldData);
+			
+			// And finally return the user's id.
+			$insertId = app('db')->select("SELECT currval(pg_get_serial_sequence('users','id'))");
+			return $insertId[0]->currval;
+		}
+		
+		/*if ($method == "update")
+		{
+			// Update the user
+			$newItem = app('db')->update("UPDATE community_member SET (".implode($fieldsToWrite, ",").") = (".implode($fieldQMarks, ",").") WHERE email = '".$input['email']."'", $fieldData);
+			
+			// And finally return the sid
+			$userID = app('db')->select("SELECT sid FROM community_member WHERE email = '".$input['email']."'");
+			return $userID[0]->sid;
+		}*/
+	}
+		
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 	
