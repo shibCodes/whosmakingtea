@@ -1,0 +1,45 @@
+<section class="userlist">
+    
+    <p class="no-users-text" *ngIf="selectedList?.items == 0">{{noPeopleMessage}}</p>
+    <p class="no-users-text" [hidden]="selectedList?.items == 0">{{instructionMessage}}</p>
+
+    <div class="list-wrap" [ngClass]="{'hidden': hideList}">
+
+        <div class="users-wrap" [perfectScrollbar]>
+
+            <div class="user" *ngFor="let user of selectedList?.items; let i = index" [ngClass]="{'deselected': !user.selected}">
+                <div class="teasmade-graph" [ngStyle]="{'width': calculateWidth(i)}"></div>
+                <div class="user-deets">
+                    <i-check-circle class="icon" [hidden]="!user.selected" (click)="togglePerson(i)"></i-check-circle>
+                    <i-circle class="icon" [hidden]="user.selected" (click)="togglePerson(i)"></i-circle>
+                    <input type="text" class="name" [(ngModel)]="user.name" (ngModelChange)="updateName()"  #input/> <!---->
+                    <!--<i-edit-3 class="icon edit"></i-edit-3>-->
+                    <div class="stats">drunk: {{user.tea_drank}}</div>
+                    <div class="stats">made: {{user.tea_made}}</div>
+                    <i-x-circle class="icon" (click)="deletePerson(i)"></i-x-circle>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="butt-add butt-general" (click)="addPerson()" [hidden]="!addVisible">Add <i-plus-circle class="icon"></i-plus-circle></button> 
+        <button class="butt-pick butt-general toggleUp" (click)="pickPerson()" [disabled]="pickPersonDisabled" [hidden]="!pickPersonVisible">Pick!</button>
+
+    </div>
+
+    <loadyspin [ngClass]="{'hidden': hideLoady}"></loadyspin>
+
+    <div class="selection-wrap" [ngClass]="{'hidden': hideSelection}">
+        
+        <div class="selected-name">{{selectedPersonName}}</div>
+        
+        <div class="button-wrap">
+            <button class="butt-pickagain butt-general" (click)="pickPerson()">Pick again <i-refresh-cw class="icon"></i-refresh-cw></button>
+            <button class="butt-addmore butt-general" (click)="backToList()">Back to list <i-plus-circle class="icon"></i-plus-circle></button>
+        </div>
+
+        <button class="butt-teamade butt-general toggleUp" (click)="teaMade()" [disabled]="pickPersonDisabled" [hidden]="!pickPersonVisible">{{selectedPersonName}} made tea!</button>
+        
+    </div>
+
+</section>

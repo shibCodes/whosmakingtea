@@ -1,0 +1,133 @@
+@import "../../../../assets/variables";
+
+.userlist {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .list-wrap {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .users-wrap {
+        width: 80%;
+        max-width: 720px;
+        margin-bottom: 20px;
+        overflow-y: auto;
+        min-height: 50px;
+        max-height: 50vh;
+        position: relative;
+        padding-right: 20px;
+    }
+
+    .no-users-text {
+        text-align: center;
+        font-size: 1.5em;
+    }
+
+    .user {
+        width: 100%;
+        height: 40px;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        transition: all 0.2s;
+
+        &.deselected {
+            opacity: 0.2;
+            //border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+        }
+        
+        .teasmade-graph {
+            position: absolute;
+            height: 101%;
+            width: 0%;
+            background: rgba(255, 255, 255, 0.12);
+            transition: all 0.5s;
+        }
+
+        .user-deets {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            .name {
+                font-size: 1.5em;
+                font-weight: 600;
+                color: $colourFontLight;
+                font-family: $fontBody;
+                width: 100%;
+                background: transparent;
+                border: none;
+                outline: none;
+                padding-top: 8px;
+                z-index: 1;
+    
+                &::-webkit-input-placeholder { color: rgba(255,255,255,0.2); }
+            }
+
+            .icon { 
+                height: 24px;
+                width: 24px;
+                margin: 0 10px;
+                cursor: pointer;
+                transition: all 0.5s;
+                z-index: 1;
+
+                &:hover { transform: scale(1.1); }
+
+                &.edit {
+                    margin-right: 0;
+                }
+            }
+
+            .stats {
+                min-width: 80px;
+            }
+        }
+
+    }
+
+    .selection-wrap {
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+        .selected-name {
+            font-size: 5em;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+    
+        .button-wrap {
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+    
+            @media all and (max-width: 450px) {
+                width: 90%;
+    
+                .butt-general {
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    
+    }
+}
+
+.hidden {
+    display: none!important;
+}

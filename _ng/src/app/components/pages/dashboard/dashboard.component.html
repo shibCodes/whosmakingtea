@@ -1,0 +1,8 @@
+<loginheader></loginheader>
+
+<section class="section-dashboard">
+
+    <sidenav [lists]="allLists" [selectedList]="selectedList" (selectedChanged)="changeSelected($event)"></sidenav>
+    <userlist [selectedList]="selectedList"></userlist>
+
+</section>

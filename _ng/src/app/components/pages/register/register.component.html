@@ -1,0 +1,29 @@
+<loginheader></loginheader>
+
+<section class="section-register"> 
+        
+        <div class="content-wrap" [ngClass]="{ 'fadeOutUp': hideRegister || loginheader.hideTagline, 'fadeInDown': !hideRegister && !loginheader.hideTagline }">
+
+            <h1>Register</h1>
+            <p>Registering allows you to create and save multiple lists of people. We'll also keep track of who's been picked so they'll have less of a chance of being picked next time!</p>
+
+            <div class="error" (hidden)="showError" [ngClass]="{ 'toggleUp': showError }"><i-alert-circle class="icon"></i-alert-circle><p>{{errorMessage}}</p></div>
+            
+            <div class="input-wrap">
+                <div class="field">
+                    <input #input type="text" class="name" placeholder="username..." [(ngModel)]="user.username" />
+                </div>
+                <div class="field">
+                    <input #input type="password" class="password" placeholder="password..." [(ngModel)]="user.password" />
+                </div>
+                <div class="field">
+                    <input #input type="password" class="password" placeholder="confirm password..." />
+                </div>
+            </div>
+
+            <button class="butt-general butt-register" (click)="register()">Register!</button>
+            <button class="butt-general butt-cancel" (click)="cancel()">Cancel</button>
+
+        </div>
+        
+    </section>

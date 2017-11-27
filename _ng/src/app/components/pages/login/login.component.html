@@ -1,0 +1,26 @@
+<loginheader></loginheader>
+
+<section class="section-login">
+
+    <div class="content-wrap" [ngClass]="{ 'fadeOutUp': hideLogin || loginheader.hideTagline, 'fadeInDown': !hideLogin && !loginheader.hideTagline }">
+        
+        <h1>Login</h1>
+        <p>Enter your details below to start picking!</p>
+        
+        <div class="error" (hidden)="showError" [ngClass]="{ 'toggleUp': showError }"><i-alert-circle class="icon"></i-alert-circle><p>{{errorMessage}}</p></div>
+
+        <div class="input-wrap">
+            <div class="field">
+                <input #input type="text" class="name" placeholder="username..." [(ngModel)]="user.username" (ngModelChange)="checkButtonState()"/>
+            </div>
+            <div class="field">
+                <input #input type="password" class="password" placeholder="password..." [(ngModel)]="user.password" (ngModelChange)="checkButtonState()"/>
+            </div>
+        </div>
+
+        <button class="butt-general butt-register" (click)="login()" [disabled]="loginDisabled">Login!</button>
+        <button class="butt-general butt-cancel" (click)="cancel()">Cancel</button>
+
+    </div>
+
+</section>

@@ -1,0 +1,35 @@
+<section class="picker">
+
+    <p class="instructions">{{instructionMessage}}</p>
+
+    <div class="picker-wrap" [ngClass]="{'hidden': hidePicker}">
+
+        <div class="people-wrap">
+
+            <div class="person" *ngFor="let person of allPeople; let i = index">
+                <input #input type="text" class="name" placeholder="enter name..." [(ngModel)]="person.name" (ngModelChange)="checkButtonState($event)"/>
+                <i-x-circle class="icon" (click)="removePerson(i)"></i-x-circle>
+            </div>
+
+        </div>
+
+        <button class="butt-add butt-general" (click)="addPerson()">Add <i-plus-circle class="icon"></i-plus-circle></button> 
+        <button class="butt-pick butt-general" [ngClass]="{ 'toggleUp': pickPersonVisible }" (click)="pickPerson()" [disabled]="pickPersonDisabled">Pick!</button>
+
+    </div>
+    
+    <loadyspin [ngClass]="{'hidden': hideLoady}"></loadyspin>
+
+    <div class="selection-wrap" [hidden]="hideSelection">
+
+        <div class="selected-name">{{selectedPerson}}</div>
+        
+        <div class="button-wrap">
+            <button class="butt-pickagain butt-general" (click)="pickPerson()">Pick again <i-refresh-cw class="icon"></i-refresh-cw></button>
+            <button class="butt-addmore butt-general" (click)="addMorePeople()">Add more people <i-plus-circle class="icon"></i-plus-circle></button>
+        </div>
+        
+    </div>
+
+
+</section>
