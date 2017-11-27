@@ -9,6 +9,19 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]
 
+    ##########################################
+    ## Reroute to index.html if path is inside /app
+    ##########################################
+    RewriteCond %{REQUEST_URI} ^/app
+    RewriteRule ^ index.html [L]
+    
+    
+    ##########################################
+    ## Reroute to index.html if no path given
+    ##########################################
+    RewriteCond %{REQUEST_URI} ^/$
+    RewriteRule ^ index.html [L]
+
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -17,4 +30,32 @@
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    ##########################################
+    ##Force SSL
+    ##########################################
+
+    #Normal way (in case you need to deploy to NON-heroku)
+    #RewriteCond %{HTTPS} !=on
+
+    #Heroku way
+    #RewriteCond %{HTTP:X-Forwarded-Proto} !https 
+
+    #If neither above conditions are met, redirect to https
+    #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    
+    ##########################################
+    ## Reroute to index.html if path is inside /app
+    ##########################################
+    RewriteCond %{REQUEST_URI} app
+    RewriteRule ^ index.html [L]
+    
+    
+    ##########################################
+    ## Reroute to index.html if no path given
+    ##########################################
+    RewriteCond %{REQUEST_URI} ^/$
+    RewriteRule ^ index.html [L]
+
 </IfModule>
