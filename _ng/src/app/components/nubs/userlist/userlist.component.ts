@@ -151,13 +151,54 @@ export class UserListComponent {
 
         for (var i = 0; i < this.selectedList.items.length; i++) {
             if (this.selectedList.items[i].selected) {
+
+                var made = this.selectedList.items[i].tea_made;
+                var drank = this.selectedList.items[i].tea_drank;
+
+                var participationPercent = (made / drank) * 100;
+
+                this.selectedList.items[i].participation = participationPercent;
+
                 peopleInRound.push(this.selectedList.items[i]);
             }
         }
 
-        var randomNumber = Math.floor(Math.random() * peopleInRound.length);
+        for (var i = 0; i < peopleInRound.length; i++) {
 
-        this.selectedPerson = peopleInRound[randomNumber];
+            var participation = 100;
+
+            console.log(peopleInRound);
+
+            if (peopleInRound[i].participation < participation) {
+
+                
+                participation = peopleInRound[i].participation;
+
+                console.log("people in round: ", peopleInRound[i]);
+                console.log("participation: ", participation);
+
+
+                this.selectedPerson = peopleInRound[i];
+
+            }
+
+        }
+
+
+
+        
+
+        //var random = Math.random();
+
+        //var randomNumber = Math.floor(random * peopleInRound.length);
+
+       // console.log("People in round: ", peopleInRound.length);
+       // console.log("Random: ", random);
+       // console.log("ranom * people", random * peopleInRound.length);
+      //  console.log("random number: ", randomNumber);
+      //  console.log("people in round: ", peopleInRound);
+
+        //this.selectedPerson = peopleInRound[randomNumber];
 
         let pickerTimeout = setTimeout(() => {  
             this.showPickedPerson(this.selectedPerson);
