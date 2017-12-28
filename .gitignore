@@ -5,3 +5,4 @@ Homestead.yaml
 .env
 _portDBToHeroku
 *.sql
+/scotch-box

@@ -106,12 +106,12 @@ export class APIService {
 
 		var cookieAuth = this.cookieService.get("whosmakingtea");
 
-		if (this.authToken == undefined && cookieAuth != "") {
+		if (this.authToken == undefined && cookieAuth != "" || this.authToken == undefined && cookieAuth != "undefined") {
 			this.setAuthToken(cookieAuth);
 			this.router.navigate(['/dashboard']);
 		}
 
-		if (cookieAuth == "" && this.authToken == undefined) {
+		if (cookieAuth == "" || cookieAuth == "undefined") {
 			this.router.navigate(['/']);
 		}
 		

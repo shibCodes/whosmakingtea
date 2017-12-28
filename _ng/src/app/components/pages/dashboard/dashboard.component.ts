@@ -43,6 +43,37 @@ export class PageDashboardComponent implements OnInit {
     ////////////////////////////////
     showList(res) {
 
+        /*
+        {
+            "list_id": 2,
+            "list_name": "Boopy",
+            "list_uid": 2,
+            "list_total_runs": 2,
+            "participants": [
+                {
+                    "pid": "1234",
+                    "name": "Shibadib",
+                    "tea_made": 0,
+                    "tea_drank": 0,
+                    "selected": true
+                },
+                {
+                    "pid": "4321",
+                    "name": "jDerp",
+                    "tea_made": 0,
+                    "tea_drank": 0,
+                    "selected": true
+                }
+            ]
+        },
+        {
+            "list_id": 3,
+            "list_name": "Boopadoop",
+            "list_uid": 2,
+            "list_total_runs": 0,
+            "participants": []
+        }*/
+
         for (var i = 0; i < res.length; i++) {
 
             var selected;
@@ -50,10 +81,10 @@ export class PageDashboardComponent implements OnInit {
             (i == 0) ? selected = true : selected = false; 
 
             var listObj = {
-                "list_name": res[i].lists_table_name,
-                "list_id": res[i].lists_table_id,
-                "items": JSON.parse(res[i].lists_table_items),
-                "total_runs": res[i].lists_table_runs,
+                "list_name": res[i].list_name,
+                "list_id": res[i].list_id,
+                "participants": res[i].participants,
+                "total_runs": res[i].list_total_runs,
                 "selected": selected
             }
 

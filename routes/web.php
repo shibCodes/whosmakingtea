@@ -25,10 +25,11 @@ $app->group(['prefix' => 'api', 'middleware' => []], function () use ($app) {
     $app->post('/genpassword',		    ['uses' => 'UserController@genSecurePassword',	        'middleware' => ['providedfieldsvalidator:password']]);
     $app->post('/login',				['uses' => 'UserController@login',						'middleware' => ['providedfieldsvalidator:username-password']]);
     $app->post('/register',				['uses' => 'UserController@registerNewUser',			'middleware' => ['providedfieldsvalidator:username-password']]);
-    $app->post('/addnewlist',			['uses' => 'ListController@addNewList',			        'middleware' => ['jwt', 'providedfieldsvalidator:username-list_name-list']]);
-    $app->post('/updatelist',			['uses' => 'ListController@updateList',			        'middleware' => ['jwt', 'providedfieldsvalidator:username-list_name-list']]);
+    $app->post('/addnewlist',			['uses' => 'ListController@addNewList',			        'middleware' => ['jwt', 'providedfieldsvalidator:username-list_name']]);
+    $app->post('/updatelist',			['uses' => 'ListController@updateList',			        'middleware' => ['jwt', 'providedfieldsvalidator:username-list_name-total_runs']]);
     $app->get('/getuserlists',			['uses' => 'ListController@getUserLists',			    'middleware' => ['jwt', 'providedfieldsvalidator:username']]);
-   //$app->get('/users',					['uses' => 'UserController@getUsers',					'middleware' => ['jwt']]);
+    $app->post('/addnewparticipant',		['uses' => 'ParticipantController@addNewParticipant',   'middleware' => ['jwt', 'providedfieldsvalidator:username-list_name-pid-name-selected-tea_drank-tea_made']]);
+    //$app->get('/users',					['uses' => 'UserController@getUsers',					'middleware' => ['jwt']]);
     //$app->get('/user',					['uses' => 'UserController@getUser',					'middleware' => ['jwt', 'providedfieldsvalidator:userUID']]);
     //$app->post('/adduser',				['uses' => 'UserController@addUser',					'middleware' => ['jwt', 'providedfieldsvalidator:user']]);
 });

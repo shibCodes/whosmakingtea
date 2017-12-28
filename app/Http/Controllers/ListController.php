@@ -54,17 +54,19 @@ class ListController extends Controller
         /////////////////////////
 		$listDetails['lists_table_name'] = $input['list_name'];
         $listDetails['lists_table_uid'] = $user[0]->users_table_id;
-        $listDetails['lists_table_items'] = json_encode($input['list']);
         $listDetails['lists_table_runs'] = $input['total_runs'];
 
         /////////////////////////
-        $listDetails['lists_table_id'] = $this->addListToDB($listDetails);
-        
+        $listReturn['list_id'] = $this->addListToDB($listDetails);
+        $listReturn['list_name'] = $input['list_name'];
+        $listReturn['list_uid'] = $user[0]->users_table_id;
+        $listReturn['list_total_runs'] = $input['total_runs'];
+    
         /////////////////////////
 		app('db')->commit();
 
 		/////////////////////////
-		return response()->json($listDetails, 200);
+		return response()->json($listReturn, 200);
 
     }
 
@@ -88,7 +90,6 @@ class ListController extends Controller
 		app('db')->beginTransaction();
         
         /////////////////////////
-        $listDetails['lists_table_items'] = json_encode($input['list']);
         $listDetails['lists_table_runs'] = $input['total_runs'];
 
         $this->updateListInDB($listDetails, $input['list_name'], $user[0]->users_table_id);
@@ -113,13 +114,45 @@ class ListController extends Controller
         if (sizeof($user) <= 0) return $error->fieldValueError(array("username"), array("User doesn't exist"));
 
         /////////////////////////
-        $list = app('db')->select("SELECT * FROM lists WHERE lists_table_uid = '".$user[0]->users_table_id."' ORDER BY lists_table_id ASC");
-        if (sizeof($list) <= 0) return response()->json(['error' => "List doesn't exist"], 400);
+        $lists = app('db')->select("SELECT * FROM lists WHERE lists_table_uid = '".$user[0]->users_table_id."' ORDER BY lists_table_id ASC");
+        if (sizeof($lists) <= 0) return response()->json(['error' => "List doesn't exist"], 400);
+
+        $listsToReturn = [];
 
         /////////////////////////
-		return response()->json($list, 200);
-        
+        for ($i = 0; $i < sizeof($lists); $i++) {
 
+            $participants = app('db')->select("SELECT * FROM participants WHERE participants_table_list_id = '".$lists[$i]->lists_table_id."'");
+            
+            $participantsToReturn = [];
+            
+            for ($p = 0; $p < sizeof($participants); $p++) {
+
+                /////////////////////////
+                $participant['pid'] = $participants[$p]->participants_table_pid;
+                $participant['name'] = $participants[$p]->participants_table_name;
+                $participant['tea_made'] = $participants[$p]->participants_table_tea_made;
+                $participant['tea_drank'] = $participants[$p]->participants_table_tea_drank;
+                $participant['selected'] = $participants[$p]->participants_table_selected;
+
+                array_push($participantsToReturn, $participant);
+
+            }
+          
+            /////////////////////////
+            $listReturn['list_id'] = $lists[$i]->lists_table_id;
+            $listReturn['list_name'] = $lists[$i]->lists_table_name;
+            $listReturn['list_uid'] = $lists[$i]->lists_table_uid;
+            $listReturn['list_total_runs'] = $lists[$i]->lists_table_runs;
+            $listReturn['participants'] = $participantsToReturn;
+
+            array_push($listsToReturn, $listReturn);
+
+        }
+
+        /////////////////////////
+		return response()->json($listsToReturn, 200);
+        
     }
 
     //////////////////////////////////////////////////////////////////
@@ -151,7 +184,7 @@ class ListController extends Controller
     private function updateListInDB($input, $listName, $userID) {
         
         /////////////////////////
-        $possibleFields = ['lists_table_items', 'lists_table_runs'];
+        $possibleFields = ['lists_table_runs'];
         $fieldsToWrite	= [];
         $fieldQMarks	= [];
         $fieldData		= [];

@@ -49,19 +49,24 @@ export class UserListComponent {
         }
     ]*/
 
+    ////////////////////////////////
     ngOnChanges(changes: SimpleChanges) {
-        
-        console.log(changes.selectedList);
 
+        ////////////////////////////////
         this.addVisible = true;
         this.pickPersonVisible = true;
 
+        ////////////////////////////////
         if (changes.selectedList.currentValue == undefined) {
             this.pickPersonVisible = false;
             this.addVisible = false;
             this.instructionMessage = "Oh no! You have no lists! Why don't you make one? :)";
         }
+        else {
+            this.instructionMessage = "Time for a round of tea?";
+        }
 
+        ////////////////////////////////
         if (changes.selectedList.previousValue != undefined) {
 
             var currentList = changes.selectedList.currentValue.list_id;
@@ -75,9 +80,14 @@ export class UserListComponent {
         
         }
 
-        if (changes.selectedList.currentValue != undefined && changes.selectedList.currentValue.items.length >= 2) {
+        ////////////////////////////////
+        if (changes.selectedList.currentValue != undefined && changes.selectedList.currentValue.participants.length >= 2) {
             this.pickPersonDisabled = false;
             this.pickPersonVisible = true;
+        }
+
+        if (changes.selectedList.currentValue.participants.length <= 0) {
+            this.instructionMessage = "Oh no! There are no people in your list!";
         }
         
     }
@@ -93,9 +103,9 @@ export class UserListComponent {
             "selected": true
         }
 
-        this.selectedList.items.push(userObj);
+        this.selectedList.participants.push(userObj);
 
-        if (this.selectedList.items.length >= 2) {
+        if (this.selectedList.participants.length >= 2) {
             this.pickPersonDisabled = false;
             this.pickPersonVisible = true;
         }
@@ -104,6 +114,7 @@ export class UserListComponent {
 
     }
 
+    ////////////////////////////////
     isLastElement(index) {
         console.log(index);
     }
@@ -111,9 +122,9 @@ export class UserListComponent {
     ////////////////////////////////
     deletePerson(personIndex) {
 
-        this.selectedList.items.splice(personIndex, 1);    
+        this.selectedList.participants.splice(personIndex, 1);    
 
-        if (this.selectedList.items.length < 2) {
+        if (this.selectedList.participants.length < 2) {
             this.pickPersonDisabled = true;
         }
 
@@ -133,36 +144,40 @@ export class UserListComponent {
     ////////////////////////////////
     togglePerson(personIndex) {
 
-        console.log(this.selectedList.items);
+        console.log(this.selectedList.participants);
 
-        this.selectedList.items[personIndex].selected = !this.selectedList.items[personIndex].selected;
+        this.selectedList.participants[personIndex].selected = !this.selectedList.participants[personIndex].selected;
 
     }
     
     ////////////////////////////////
     pickPerson() {
         
+        this.instructionMessage = "Please wait while we pick the perfect person...";    
         this.hideList = true;
         this.hideSelection = true;
-        this.hideLoady = false;
-
-        this.instructionMessage = "Please wait while we pick the perfect person...";
+        this.hideLoady = false;      
         var peopleInRound = [];
+        var lowestParticipation = [];
 
-        for (var i = 0; i < this.selectedList.items.length; i++) {
-            if (this.selectedList.items[i].selected) {
+        ////////////////////////////////
+        for (var i = 0; i < this.selectedList.participants.length; i++) {
 
-                var made = this.selectedList.items[i].tea_made;
-                var drank = this.selectedList.items[i].tea_drank;
+            if (this.selectedList.participants[i].selected) {
+
+                var made = this.selectedList.participants[i].tea_made;
+                var drank = this.selectedList.participants[i].tea_drank;
 
                 var participationPercent = (made / drank) * 100;
 
-                this.selectedList.items[i].participation = participationPercent;
+                this.selectedList.participants[i].participation = participationPercent;
 
-                peopleInRound.push(this.selectedList.items[i]);
+                peopleInRound.push(this.selectedList.participants[i]);
             }
+
         }
 
+        ////////////////////////////////
         for (var i = 0; i < peopleInRound.length; i++) {
 
             var participation = 100;
@@ -220,14 +235,14 @@ export class UserListComponent {
 
         console.log(this.selectedPerson);
 
-        for (var i = 0; i < this.selectedList.items.length; i++) {
+        for (var i = 0; i < this.selectedList.participants.length; i++) {
             
-            if (this.selectedPerson.id == this.selectedList.items[i].id) {
-                this.selectedList.items[i].tea_made++;
+            if (this.selectedPerson.id == this.selectedList.participants[i].id) {
+                this.selectedList.participants[i].tea_made++;
             }
 
-            if (this.selectedList.items[i].selected == true) {
-                this.selectedList.items[i].tea_drank++;
+            if (this.selectedList.participants[i].selected == true) {
+                this.selectedList.participants[i].tea_drank++;
             }
         }
 
@@ -246,7 +261,7 @@ export class UserListComponent {
     calculateWidth(index) {
         
 
-        var teasMade = this.selectedList.items[index].tea_made;
+        var teasMade = this.selectedList.participants[index].tea_made;
         var totalRuns = this.selectedList.total_runs;
 
         var percentage = (teasMade / totalRuns) * 100;
@@ -277,8 +292,7 @@ export class UserListComponent {
         var listObj = {
             "username": localStorage.getItem("username"),
             "list_name": this.selectedList.list_name,
-            "total_runs": this.selectedList.total_runs,
-            "list": this.selectedList.items
+            "total_runs": this.selectedList.total_runs
         }
 
         this.apiService.updateList(listObj);
@@ -296,8 +310,8 @@ export class UserListComponent {
             randomIDString += characters[ Math.floor(Math.random() * charactersLength)];     
         }
 
-        for (var j = 0; j < this.selectedList.items.length; j++) {
-            if (this.selectedList.items[j].id == randomIDString) {
+        for (var j = 0; j < this.selectedList.participants.length; j++) {
+            if (this.selectedList.participants[j].id == randomIDString) {
                 this.generateRandomID();
             }
         }
