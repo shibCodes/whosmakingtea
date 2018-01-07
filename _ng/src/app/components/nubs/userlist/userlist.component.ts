@@ -28,9 +28,17 @@ export class UserListComponent {
     hideList:boolean = false;
     selectedPersonName:string;
     selectedPerson;
+    excludedPerson = {
+        "pid": "0"
+    };
     pickPersonDisabled: boolean = true;
     pickPersonVisible: boolean = false;
     addVisible:boolean = false;
+    addDisabled:boolean = false;
+    newParticipantObj:object = undefined;
+    showError:boolean = false;
+    updateDisabled:boolean = false;
+    errorMessage:string = "";
 
     constructor (
         private apiService: APIService
@@ -86,7 +94,7 @@ export class UserListComponent {
             this.pickPersonVisible = true;
         }
 
-        if (changes.selectedList.currentValue.participants.length <= 0) {
+        if (changes.selectedList.currentValue != undefined && changes.selectedList.currentValue.participants.length <= 0) {
             this.instructionMessage = "Oh no! There are no people in your list!";
         }
         
@@ -95,48 +103,86 @@ export class UserListComponent {
     ////////////////////////////////
     addPerson() {
 
-        var userObj = {
-            "id": this.generateRandomID(),
-            "name": "",
-            "tea_made": 0,
-            "tea_drank": 0,
-            "selected": true
+        // disable add button
+        // create user obj to scope
+        // send to server
+        // once all g then push to selectedlist with pid
+
+        this.showError = false;
+
+        if (!this.addDisabled) {
+
+            this.addDisabled = true;
+
+            this.newParticipantObj = {
+                "name": "",
+                "tea_made": 0,
+                "tea_drank": 0,
+                "selected": true,
+                "list_name": this.selectedList.list_name,
+                "username": localStorage.getItem("username"),
+                "local_id": this.generateLocalID(),
+                "last": false
+            }
+
+            this.selectedList.participants.push(this.newParticipantObj);
+
+            if (this.selectedList.participants.length >= 2) {
+                this.pickPersonDisabled = false;
+                this.pickPersonVisible = true;
+            }
+    
+            this.apiService.addNewParticipant(this.newParticipantObj).then(this.updateSelectedList.bind(this));
+
         }
 
-        this.selectedList.participants.push(userObj);
-
-        if (this.selectedList.participants.length >= 2) {
-            this.pickPersonDisabled = false;
-            this.pickPersonVisible = true;
-        }
-
-        this.updateList();
+        
 
     }
 
     ////////////////////////////////
     isLastElement(index) {
-        console.log(index);
+        //console.log(index);
     }
 
     ////////////////////////////////
-    deletePerson(personIndex) {
+    deleteParticipant(participantIndex) {
 
-        this.selectedList.participants.splice(personIndex, 1);    
+        // delete from db
+        // then splice from list
+
+        var participantObj = {
+            "list_name": this.selectedList.list_name,
+            "username": localStorage.getItem("username"),
+            "pid": this.selectedList.participants[participantIndex].pid
+        }
+
+        this.selectedList.participants.splice(participantIndex, 1);
 
         if (this.selectedList.participants.length < 2) {
             this.pickPersonDisabled = true;
         }
 
-        this.updateList();
+        this.apiService.deleteParticipant(participantObj).then(this.removeFromSelectedList.bind(this));
+
     }
 
     ////////////////////////////////
-    updateName() {
-        
-        let updateNameTimeout = setTimeout(() => {  
-            this.updateList();
-        }, 1500);
+    updateName(participantIndex) {
+
+        if (!this.updateDisabled) {
+
+            this.updateDisabled = true;
+
+            let updateNameTimeout = setTimeout(() => {  
+
+                this.updateParticipant(participantIndex);
+
+                this.updateDisabled = false;
+
+            }, 1500);
+
+        } 
 
     }
 
@@ -144,7 +190,7 @@ export class UserListComponent {
     ////////////////////////////////
     togglePerson(personIndex) {
 
-        console.log(this.selectedList.participants);
+        //console.log(this.selectedList.participants);
 
         this.selectedList.participants[personIndex].selected = !this.selectedList.participants[personIndex].selected;
 
@@ -168,7 +214,11 @@ export class UserListComponent {
                 var made = this.selectedList.participants[i].tea_made;
                 var drank = this.selectedList.participants[i].tea_drank;
 
-                var participationPercent = (made / drank) * 100;
+                var participationPercent = 0;
+
+                if (drank > 0) {
+                    participationPercent = (made / drank) * 100;
+                }
 
                 this.selectedList.participants[i].participation = participationPercent;
 
@@ -178,46 +228,37 @@ export class UserListComponent {
         }
 
         ////////////////////////////////
-        for (var i = 0; i < peopleInRound.length; i++) {
+        var shuffledArray = this.shuffleArray(peopleInRound);
+        var participation = 100;
 
-            var participation = 100;
+        ////////////////////////////////
+        for (var i = 0; i < shuffledArray.length; i++) {
 
-            console.log(peopleInRound);
+            if (shuffledArray[i].participation < participation && !shuffledArray[i].last) {
+                            
+                if (this.excludedPerson.pid != shuffledArray[i].pid) {
+                    participation = shuffledArray[i].participation;
 
-            if (peopleInRound[i].participation < participation) {
-
-                
-                participation = peopleInRound[i].participation;
-
-                console.log("people in round: ", peopleInRound[i]);
-                console.log("participation: ", participation);
-
-
-                this.selectedPerson = peopleInRound[i];
+                    this.selectedPerson = shuffledArray[i];
+                }           
 
             }
 
         }
 
-
-
-        
-
-        //var random = Math.random();
-
-        //var randomNumber = Math.floor(random * peopleInRound.length);
-
-       // console.log("People in round: ", peopleInRound.length);
-       // console.log("Random: ", random);
-       // console.log("ranom * people", random * peopleInRound.length);
-      //  console.log("random number: ", randomNumber);
-      //  console.log("people in round: ", peopleInRound);
-
-        //this.selectedPerson = peopleInRound[randomNumber];
-
+        ////////////////////////////////
         let pickerTimeout = setTimeout(() => {  
             this.showPickedPerson(this.selectedPerson);
         }, 1500);
+
+    }
+
+    ////////////////////////////////
+    pickAgain() {
+
+        this.excludedPerson = this.selectedPerson;
+
+        this.pickPerson();
 
     }
 
@@ -233,12 +274,15 @@ export class UserListComponent {
     ////////////////////////////////
     teaMade() {
 
-        console.log(this.selectedPerson);
+        //console.log(this.selectedPerson);
 
         for (var i = 0; i < this.selectedList.participants.length; i++) {
+
+            this.selectedList.participants[i].last = false;
             
-            if (this.selectedPerson.id == this.selectedList.participants[i].id) {
+            if (this.selectedPerson.pid == this.selectedList.participants[i].pid) {
                 this.selectedList.participants[i].tea_made++;
+                this.selectedList.participants[i].last = true;
             }
 
             if (this.selectedList.participants[i].selected == true) {
@@ -249,6 +293,7 @@ export class UserListComponent {
         this.selectedList.total_runs++;
 
         this.updateList();
+        this.updateParticipants();
 
         this.hideSelection = true;
         this.hideList = false;
@@ -273,7 +318,7 @@ export class UserListComponent {
     ////////////////////////////////
     private showPickedPerson(selectedPerson) {
 
-        console.log(selectedPerson);
+        //console.log(selectedPerson);
 
         this.hideLoady = true;
         this.hideSelection = false;
@@ -285,9 +330,38 @@ export class UserListComponent {
     }
 
     ////////////////////////////////
+    private updateParticipant(participantIndex) {
+
+        var participant = this.selectedList.participants[participantIndex];
+
+        var participantObj = {
+            "username": localStorage.getItem("username"),
+            "list_name": this.selectedList.list_name,
+            "participants": [
+                participant
+            ]
+        }
+
+        this.apiService.updateParticipants(participantObj);
+
+    }
+
+    ////////////////////////////////
+    private updateParticipants() {
+
+        var participantObj = {
+            "username": localStorage.getItem("username"),
+            "list_name": this.selectedList.list_name,
+            "participants": this.selectedList.participants
+        }
+
+        this.apiService.updateParticipants(participantObj);
+    }
+
+    ////////////////////////////////
     private updateList() {
         
-        console.log(this.selectedList);
+        //console.log(this.selectedList);
 
         var listObj = {
             "username": localStorage.getItem("username"),
@@ -300,26 +374,6 @@ export class UserListComponent {
     }
 
     ////////////////////////////////
-    private generateRandomID() {
-        
-        var characters:string = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		var charactersLength:number = characters.length;
-		var randomIDString = '';
-		
-		for (var i = 0; i < 4; i++) {
-            randomIDString += characters[ Math.floor(Math.random() * charactersLength)];     
-        }
-
-        for (var j = 0; j < this.selectedList.participants.length; j++) {
-            if (this.selectedList.participants[j].id == randomIDString) {
-                this.generateRandomID();
-            }
-        }
-
-        return randomIDString;
-    }  
-
-    ////////////////////////////////
     private resetDefaults() {
         this.instructionMessage = "Time for a round of tea?";
         this.hideLoady = true;
@@ -329,5 +383,89 @@ export class UserListComponent {
         this.selectedPerson;
         this.pickPersonDisabled = true;
         this.pickPersonVisible = false;
+    }
+
+    ////////////////////////////////
+    private updateSelectedList(res) {
+
+        var error = res.error;
+
+        if (error != undefined) {
+            // add user to sync list
+            this.errorMessage = "Oh no! There was a problem adding a new person! :( Maybe try again later?";
+            this.showError = true;
+        }
+        else {
+
+            var pid = res.pid;
+            var localID = res.local_id;
+
+            for (var i = 0; i < this.selectedList.participants.length; i++) {
+
+                if (localID == this.selectedList.participants[i].local_id) {
+                    this.selectedList.participants[i].pid = pid;
+                }
+
+            }
+
+        }
+
+        this.addDisabled = false;
+
+    }
+
+    ////////////////////////////////
+    private removeFromSelectedList(res) {
+
+        var error = res.error;
+
+        if (error != undefined) {
+            // Add to sync list to delete later
+            this.errorMessage = "Oh no! There was a problem deleting that person! :( Maybe try again later?"; 
+            this.showError = true;
+        }
+
+    }
+
+    ////////////////////////////////
+    private generateLocalID() {
+
+        /////////////////////////
+        var characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		var charactersLength = characters.length;
+		var randomIDString = '';
+        
+        /////////////////////////
+		for (var i = 0; i < 4; i++) {
+            randomIDString += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        /////////////////////////
+        for (var p = 0; p < this.selectedList.participants.length; p++) {
+
+            if (randomIDString == this.selectedList.participants[p].local_id) {
+                this.generateLocalID();
+            }
+
+        }
+        
+        /////////////////////////
+        return randomIDString;
+
+    }
+
+    ////////////////////////////////
+    private shuffleArray(array) {
+
+        for (let i = array.length - 1; i > 0; i--) {
+
+            const j = Math.floor(Math.random() * (i + 1));
+
+            [array[i], array[j]] = [array[j], array[i]];
+
+        }
+
+        return array;
+
     }
 }

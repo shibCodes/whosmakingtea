@@ -23,6 +23,7 @@ export class PageDashboardComponent implements OnInit {
     username:string;
     allLists = [];
     selectedList;
+    showDeletePopup:boolean = false;
     
     constructor (
         private apiService: APIService
@@ -42,37 +43,6 @@ export class PageDashboardComponent implements OnInit {
 
     ////////////////////////////////
     showList(res) {
-
-        /*
-        {
-            "list_id": 2,
-            "list_name": "Boopy",
-            "list_uid": 2,
-            "list_total_runs": 2,
-            "participants": [
-                {
-                    "pid": "1234",
-                    "name": "Shibadib",
-                    "tea_made": 0,
-                    "tea_drank": 0,
-                    "selected": true
-                },
-                {
-                    "pid": "4321",
-                    "name": "jDerp",
-                    "tea_made": 0,
-                    "tea_drank": 0,
-                    "selected": true
-                }
-            ]
-        },
-        {
-            "list_id": 3,
-            "list_name": "Boopadoop",
-            "list_uid": 2,
-            "list_total_runs": 0,
-            "participants": []
-        }*/
 
         for (var i = 0; i < res.length; i++) {
 
@@ -107,6 +77,13 @@ export class PageDashboardComponent implements OnInit {
 
         }
 
+    }
+
+    ////////////////////////////////
+    showPopup(isVisible) {
+        console.log("is visible: ", isVisible);
+
+        this.showDeletePopup = isVisible;
     }
 
 }

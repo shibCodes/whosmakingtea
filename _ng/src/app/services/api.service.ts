@@ -87,6 +87,38 @@ export class APIService {
 	}
 
 	////////////////////////////////
+	saveListName(listObj: object) {
+		return this.http.post(this.baseURL + 'savelistname', listObj, this.options)
+						.toPromise()
+						.then(this.extractData)
+						.catch(this.handleError);
+	}
+
+	////////////////////////////////
+	addNewParticipant(userObj: object) {
+		return this.http.post(this.baseURL + 'addnewparticipant', userObj, this.options)
+						.toPromise()
+						.then(this.extractData)
+						.catch(this.handleError);
+	}
+
+	////////////////////////////////
+	updateParticipants(participantsObj: object) {
+		return this.http.post(this.baseURL + 'updateparticipants', participantsObj, this.options)
+						.toPromise()
+						.then(this.extractData)
+						.catch(this.handleError);
+	}
+
+	////////////////////////////////
+	deleteParticipant(participantObj:object) {
+		return this.http.post(this.baseURL + 'deleteparticipant', participantObj, this.options)
+						.toPromise()
+						.then(this.extractData)
+						.catch(this.handleError);
+	}
+
+	////////////////////////////////
   	// Set the auth token so we can use it again and again
 	setAuthToken(auth_token: string) {
 		

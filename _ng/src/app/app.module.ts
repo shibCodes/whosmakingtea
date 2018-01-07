@@ -18,6 +18,9 @@ import { IconCircle } from 'angular-feather';
 import { IconRefreshCw } from 'angular-feather';
 import { IconAlertCircle } from 'angular-feather';
 import { IconEdit3 } from 'angular-feather';
+import { IconMoreHorizontal } from 'angular-feather';
+import { IconTrash2 } from 'angular-feather';
+import { IconX } from 'angular-feather';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -30,6 +33,7 @@ import { LoadySpinComponent } from './components/nubs/loadyspin/loadyspin.compon
 import { LoginHeaderComponent } from './components/nubs/loginheader/loginheader.component';
 import { SideNavComponent } from './components/nubs/sidenav/sidenav.component';
 import { UserListComponent } from './components/nubs/userlist/userlist.component';
+import { PopupComponent } from './components/nubs/popup/popup.component';
 
 ////////////////////////////////
 ////////// COMPONENTS - PAGES
@@ -65,6 +69,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     LoginHeaderComponent,
     SideNavComponent,
     UserListComponent,
+    PopupComponent,
     PageHomeComponent,
     PageRegisterComponent,
     PageLoginComponent,
@@ -84,6 +89,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     IconRefreshCw,
     IconAlertCircle,
     IconEdit3,
+    IconMoreHorizontal,
+    IconTrash2,
+    IconX,
     PerfectScrollbarModule
   ],
   providers: [ 

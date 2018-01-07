@@ -4,9 +4,16 @@
         <div class="welcome-intro">Here are your saved lists...</div>
     </div>
     <div class="sidebar-lists">
-        <div class="sidebar-list" *ngFor="let list of lists; let i = index">
-            <a class="list" [ngClass]="{'selected': list.selected}" (click)="setSelected(list.list_id)">{{list.list_name}}</a>
-            <div class="total">{{list.total_runs}}</div>
+        <div class="sidebar-list" #sidebarlists *ngFor="let list of lists; let i = index">
+            <a class="list" [ngClass]="{'selected': list.selected, 'hidden': list.showedit}" (click)="setSelected(list.list_id)">{{list.list_name}}</a>
+            <input [hidden]="!list.showedit" [(ngModel)]="list.list_name"/>
+            <i-more-horizontal class="icon" [hidden]="list.showmore" [ngClass]="{'selected': list.selected && !list.showmore}" (click)="showMore(i)"></i-more-horizontal>
+            <i-x class="icon" [hidden]="!list.showmore" [ngClass]="{'selected': list.selected && list.showmore}" (click)="showMore(i)"></i-x>
+            <div class="showmore-wrap" [ngClass]="{'visible': list.showmore}">
+                <i-edit-3 class="function" [hidden]="list.showedit" (click)="editListName(i)"></i-edit-3>
+                <i-save class="function" [hidden]="!list.showedit" (click)="saveListName(i)"></i-save>
+                <i-trash-2 class="function" (click)="deleteList()"></i-trash-2>
+            </div>
         </div>
     </div>
     <div class="sidebar-add" [hidden]="!addNewList">
