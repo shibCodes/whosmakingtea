@@ -192,7 +192,7 @@ class ParticipantController extends Controller
     private function addParticipantToDB($input) {
 
         /////////////////////////
-		$possibleFields = ['participants_table_list_id', 'participants_table_name', 'participants_table_pid', 'participants_table_selected', 'participants_table_tea_drank', 'participants_table_tea_made', 'participants_table_active'];
+		$possibleFields = ['participants_table_list_id', 'participants_table_name', 'participants_table_pid', 'participants_table_selected', 'participants_table_tea_drank', 'participants_table_tea_made', 'participants_table_active', 'participants_table_last'];
 		$fieldsToWrite	= [];
 		$fieldQMarks	= [];
 		$fieldData		= [];
