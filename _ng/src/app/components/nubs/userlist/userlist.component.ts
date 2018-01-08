@@ -213,14 +213,17 @@ export class UserListComponent {
 
                 var made = this.selectedList.participants[i].tea_made;
                 var drank = this.selectedList.participants[i].tea_drank;
+                var notMade = drank - made;
 
-                var participationPercent = 0;
+                /*var participationPercent = 0;
 
                 if (drank > 0) {
                     participationPercent = (made / drank) * 100;
                 }
 
-                this.selectedList.participants[i].participation = participationPercent;
+                this.selectedList.participants[i].participation = participationPercent;*/
+
+                this.selectedList.participants[i].percentage_not_made = (notMade / drank) * 100;
 
                 peopleInRound.push(this.selectedList.participants[i]);
             }
@@ -228,11 +231,44 @@ export class UserListComponent {
         }
 
         ////////////////////////////////
-        var shuffledArray = this.shuffleArray(peopleInRound);
-        var participation = 100;
+        var teaTally = 0;
+        peopleInRound.forEach((a) => teaTally += a.percentage_not_made);
+        var modifier = 100 / teaTally;
+
+        //console.log("people in round: ", peopleInRound);
+        
+        // Calculate the drink modifier
+        peopleInRound.map( (a) => a.percentage = a.percentage_not_made*modifier );
+
+        //console.log("with modifier: ", peopleInRound);
+
+        // Now sort
+        peopleInRound.sort( (a, b):number => { 
+            if (a.percentage < b.percentage) return -1;
+            if (a.percentage > b.percentage) return 1;
+            return 0;
+        } );
+
+        var victim = null;
+        var roulette = Math.ceil(Math.random() * 100);
+        var pointer = 0;
+        peopleInRound.forEach( (a) => {
+            pointer = pointer + a.percentage;
+            console.log(a);
+            if (roulette <= pointer && victim == null && !a.last) {
+                victim = a;
+                ///if(!victims[a.name]) { victims[a.name] = 0; } victims[a.name] ++;
+                //console.log("VICTIM: ", victim);
+                this.selectedPerson = victim;
+            }
+        });
 
         ////////////////////////////////
-        for (var i = 0; i < shuffledArray.length; i++) {
+        //var shuffledArray = this.shuffleArray(peopleInRound);
+        //var participation = 100;
+
+        ////////////////////////////////
+        /*for (var i = 0; i < shuffledArray.length; i++) {
 
             if (shuffledArray[i].participation < participation && !shuffledArray[i].last) {
                             
@@ -244,7 +280,9 @@ export class UserListComponent {
 
             }
 
-        }
+        }*/
+
+
 
         ////////////////////////////////
         let pickerTimeout = setTimeout(() => {  
