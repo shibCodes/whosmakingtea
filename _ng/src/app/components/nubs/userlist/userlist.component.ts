@@ -8,6 +8,7 @@ import { Component, Input, ViewChildren, SimpleChanges } from '@angular/core';
 ////////////////////////////////
 ////////// SERVICES
 import { APIService } from '../../../services/api.service';
+import { stringify } from '@angular/compiler/src/util';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SETUP COMPONENT
@@ -241,6 +242,7 @@ export class UserListComponent {
         peopleInRound.map( (a) => a.percentage = a.percentage_not_made*modifier );
 
         //console.log("with modifier: ", peopleInRound);
+        //console.log(JSON.stringify(peopleInRound));
 
         // Now sort
         peopleInRound.sort( (a, b):number => { 
@@ -249,19 +251,77 @@ export class UserListComponent {
             return 0;
         } );
 
+        //- Find the graphPlot, which is 100 / (num participants - 1) (e.g 33)
+        //- Plot out the graphArr using the graphPlot (let's say it's 33.33 with 4 participants) as thus [100, 66.6, 33.3, 0]
+        //- The find the graphDiff, which is the sum of graphArr / 100 (e.g. 199.9 / 100 = 1.999)
+        //- Then recalculate each new percentage for participants with:
+        // newChange = (moddedPerc * graphDiff) + graphArr[i] / 2 / graphDiff
+        // (where [i] is the value from graphArr that corresponds with this user's position in the original sorted drinks array.
+        // Mod graph = (modPer * graphDiff) + 100 / 2 / graphDiff = result
+        // (23*2.5) + 100 / 2 / 2.5 = 31.5
+
+        var graphPlot = 100 / (peopleInRound.length - 1);
+        var graphDiff = 0;
+
+       // console.log("graph plot: ", graphPlot);
+
+        for (var p = 0; p < peopleInRound.length; p++) {
+            
+            var graphArrayNum = 100 - (graphPlot * p);
+            
+            graphDiff = graphDiff + graphArrayNum;
+
+           // console.log("graph array num: ", graphArrayNum);
+          //  console.log("graph diff: ", graphDiff);
+        }
+
+        graphDiff = graphDiff / 100;
+
+     //   console.log("actual graph diff: ", graphDiff);
+
+
+        var randomMax = 0;
+
+        //console.log(peopleInRound);
+        //console.log(graphPlot);
+
+
+        for (var i = 0; i < peopleInRound.length; i++) {
+            
+            var participantWeighter = graphPlot * i;
+            //var graphArrayNum = 100 - (graphPlot * i);
+
+            var weightedPercentage = (peopleInRound[i].percentage + participantWeighter) / 2;
+            //(modPer * graphDiff) + 100 / 2 / graphDiff = result
+           // (moddedPerc * graphDiff) + graphArr[i] / 2 / graphDiff
+            //var weightedPercentage = (((peopleInRound[i].percentage * graphDiff) + graphArrayNum) / 2) / graphDiff;
+
+            //var weightedPercentage = (peopleInRound[i].percentage * graphDiff) + graphArrayNum / 2 / graphDiff;
+            randomMax = randomMax + weightedPercentage;
+
+            peopleInRound[i].percentage = weightedPercentage;
+
+            //console.log("percentage: ", weightedPercentage);
+            //console.log("random max: ", randomMax);
+
+
+        }
+
+        console.log(peopleInRound);
+
         var victim = null;
-        var roulette = Math.ceil(Math.random() * 100);
+        var roulette = Math.ceil(Math.random() * randomMax);
         var pointer = 0;
+        console.log("roulette: ", roulette);
         peopleInRound.forEach( (a) => {
             pointer = pointer + a.percentage;
-            console.log(a);
             if (roulette <= pointer && victim == null && !a.last) {
                 victim = a;
                 ///if(!victims[a.name]) { victims[a.name] = 0; } victims[a.name] ++;
-                //console.log("VICTIM: ", victim);
                 this.selectedPerson = victim;
             }
         });
+
 
         ////////////////////////////////
         //var shuffledArray = this.shuffleArray(peopleInRound);

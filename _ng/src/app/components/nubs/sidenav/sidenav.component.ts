@@ -101,7 +101,7 @@ export class SideNavComponent implements OnInit {
     ////////////////////////////////
     showMore(listIndex) {
 
-        console.log(listIndex);
+        //console.log(listIndex);
 
         this.lists[listIndex].showmore = !this.lists[listIndex].showmore;
 
@@ -125,7 +125,7 @@ export class SideNavComponent implements OnInit {
 
         }, 20);
 
-        console.log("editListName()");
+        //console.log("editListName()");
 
     }
 
