@@ -81,7 +81,7 @@ export class PageDashboardComponent implements OnInit {
 
     ////////////////////////////////
     showPopup(isVisible) {
-        console.log("is visible: ", isVisible);
+        //console.log("is visible: ", isVisible);
 
         this.showDeletePopup = isVisible;
     }

@@ -21,8 +21,8 @@ import 'rxjs/add/operator/toPromise';
 export class APIService {
 	authToken: string;
 
-	//private baseURL = 'http://192.168.33.10/api/';
-	private baseURL = '/api/';
+	private baseURL = 'http://192.168.33.10/api/';
+	//private baseURL = '/api/';
 	private headers = new Headers();
 	private options;
 
@@ -120,21 +120,31 @@ export class APIService {
 
 	////////////////////////////////
   	// Set the auth token so we can use it again and again
-	setAuthToken(auth_token: string) {
-		
-		// Set auth token
-		this.authToken = auth_token;
-		this.cookieService.set("whosmakingtea", auth_token);
-		
-		// Add headers / options
-		this.headers.append('Authorization', 'Bearer ' + this.authToken); 
-		this.options = new RequestOptions({ headers: this.headers });
+	setAuthToken(auth_token) {
+
+		//console.log("setAuthToken(): ", auth_token);
+
+		if (auth_token.length > 0) {
+
+			//console.log("auth token: ", auth_token);
+
+			// Set auth token
+			this.authToken = auth_token;
+			this.cookieService.set("whosmakingtea", auth_token);
+			
+			// Add headers / options
+			this.headers.append('Authorization', 'Bearer ' + this.authToken); 
+			this.options = new RequestOptions({ headers: this.headers });
+
+		}
 
 	}
 
 	////////////////////////////////
   	// Check if we have an auth token set and if not REJECT that shizz
 	checkAuthToken() {
+
+		//console.log("options: ", this.options);
 
 		var cookieAuth = this.cookieService.get("whosmakingtea");
 

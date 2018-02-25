@@ -66,9 +66,9 @@ export class PageRegisterComponent {
 
     private goToDashboard(res) {
     
-        console.log("error: ", error);
-        console.log("aw yeah bb");
-        console.log(res);
+        //console.log("error: ", error);
+        //console.log("aw yeah bb");
+        //console.log(res);
 
         var error = res.error;
 

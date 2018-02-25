@@ -82,9 +82,9 @@ export class PageLoginComponent {
 
     private goToDashboard(res) {
 
-        console.log("error: ", error);
-        console.log("aw yeah bb");
-        console.log(res);
+        //console.log("error: ", error);
+        //console.log("aw yeah bb");
+        //console.log(res);
 
         var error = res.error;
 
@@ -94,6 +94,8 @@ export class PageLoginComponent {
         }
         else {
             this.apiService.setAuthToken(res.auth_token);
+            // local storage set item in promise
+            // .then(go to dashboard)
             localStorage.setItem("username", this.user.username);
             this.router.navigate(['dashboard']); 
         }
