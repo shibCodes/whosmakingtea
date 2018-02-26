@@ -21,8 +21,8 @@ import 'rxjs/add/operator/toPromise';
 export class APIService {
 	authToken: string;
 
-	private baseURL = 'http://192.168.33.10/api/';
-	//private baseURL = '/api/';
+	//private baseURL = 'http://192.168.33.10/api/';
+	private baseURL = '/api/';
 	private headers = new Headers();
 	private options;
 

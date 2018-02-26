@@ -3,7 +3,7 @@
 
 ////////////////////////////////
 ////////// ANGULAR CORE
-import { Component, Input, ViewChildren, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, ViewChildren, SimpleChanges, EventEmitter } from '@angular/core';
 
 ////////////////////////////////
 ////////// SERVICES
@@ -22,6 +22,7 @@ import { stringify } from '@angular/compiler/src/util';
 //////////////////////////////// EXPORT CLASS
 export class UserListComponent {
     @Input() selectedList;
+    @Output() showPopup: EventEmitter<boolean> = new EventEmitter();
     noPeopleMessage:string = "Oh no! There are no people in your list!";
     instructionMessage:string = "Time for a round of tea?";
     hideLoady:boolean = true;
@@ -149,10 +150,12 @@ export class UserListComponent {
     ////////////////////////////////
     deleteParticipant(participantIndex) {
 
+        this.showPopup.emit(true);
+
         // delete from db
         // then splice from list
 
-        var participantObj = {
+        /*var participantObj = {
             "list_name": this.selectedList.list_name,
             "username": localStorage.getItem("username"),
             "pid": this.selectedList.participants[participantIndex].pid
@@ -164,7 +167,7 @@ export class UserListComponent {
             this.pickPersonDisabled = true;
         }
 
-        this.apiService.deleteParticipant(participantObj).then(this.removeFromSelectedList.bind(this));
+        this.apiService.deleteParticipant(participantObj).then(this.removeFromSelectedList.bind(this));*/
 
     }
 

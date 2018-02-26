@@ -3,7 +3,7 @@
 <section class="section-dashboard">
 
     <sidenav [lists]="allLists" [selectedList]="selectedList" (selectedChanged)="changeSelected($event)" (showPopup)="showPopup($event)"></sidenav>
-    <userlist [selectedList]="selectedList"></userlist>
+    <userlist [selectedList]="selectedList" (showPopup)="showPopup($event)"></userlist>
 
     <!--<popup [selectedList]="selectedList" [ngClass]="{'visible': showDeletePopup}" (showPopup)="showPopup($event)"></popup>-->
 

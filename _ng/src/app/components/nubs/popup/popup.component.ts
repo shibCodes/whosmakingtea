@@ -21,6 +21,7 @@ import { APIService } from '../../../services/api.service';
 //////////////////////////////// EXPORT CLASS
 export class PopupComponent implements OnInit{
     @Input() selectedList;
+    @Input() popupType;
     @Output() showPopup: EventEmitter<boolean> = new EventEmitter();
     username:string;
 
@@ -41,7 +42,9 @@ export class PopupComponent implements OnInit{
     }
 
     ////////////////////////////////
-    deleteList() {
+    delete() {
+
+        
 
         //console.log(this.selectedList);
 
