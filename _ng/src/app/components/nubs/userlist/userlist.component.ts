@@ -227,7 +227,14 @@ export class UserListComponent {
 
                 this.selectedList.participants[i].participation = participationPercent;*/
 
-                this.selectedList.participants[i].percentage_not_made = (notMade / drank) * 100;
+                if (drank == 0) {
+                    this.selectedList.participants[i].percentage_not_made = 100;
+                }
+                else {
+                    this.selectedList.participants[i].percentage_not_made = (notMade / drank) * 100;
+                }
+
+                console.log(this.selectedList.participants[i].percentage_not_made);
 
                 peopleInRound.push(this.selectedList.participants[i]);
             }
@@ -239,7 +246,6 @@ export class UserListComponent {
         peopleInRound.forEach((a) => teaTally += a.percentage_not_made);
         var modifier = 100 / teaTally;
 
-        //console.log("people in round: ", peopleInRound);
         
         // Calculate the drink modifier
         peopleInRound.map( (a) => a.percentage = a.percentage_not_made*modifier );
@@ -294,6 +300,11 @@ export class UserListComponent {
             var participantWeighter = graphPlot * i;
             //var graphArrayNum = 100 - (graphPlot * i);
 
+            /*if (isNaN(peopleInRound[i].percentage)) {
+                //console.log("fix!");
+                peopleInRound[i].percentage = 0;
+            }*/
+
             var weightedPercentage = (peopleInRound[i].percentage + participantWeighter) / 2;
             //(modPer * graphDiff) + 100 / 2 / graphDiff = result
            // (moddedPerc * graphDiff) + graphArr[i] / 2 / graphDiff
@@ -302,6 +313,8 @@ export class UserListComponent {
             //var weightedPercentage = (peopleInRound[i].percentage * graphDiff) + graphArrayNum / 2 / graphDiff;
             randomMax = randomMax + weightedPercentage;
 
+            //console.log(peopleInRound[i].percentage);
+            //console.log("weighted: ", weightedPercentage);
             peopleInRound[i].percentage = weightedPercentage;
 
             //console.log("percentage: ", weightedPercentage);
@@ -315,8 +328,9 @@ export class UserListComponent {
         var victim = null;
         var roulette = Math.ceil(Math.random() * randomMax);
         var pointer = 0;
-        console.log("roulette: ", roulette);
+        //console.log("roulette: ", roulette);
         peopleInRound.forEach( (a) => {
+            //console.log(a.percentage);
             pointer = pointer + a.percentage;
             if (roulette <= pointer && victim == null && !a.last) {
                 victim = a;
