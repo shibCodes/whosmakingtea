@@ -4,12 +4,12 @@
 
     <div class="picker-wrap" [ngClass]="{'hidden': hidePicker}">
 
-        <div class="people-wrap">
+        <div class="people-wrap" [perfectScrollbar]>
 
-            <div class="person" *ngFor="let person of allPeople; let i = index">
-                <input #input type="text" class="name" placeholder="enter name..." [(ngModel)]="person.name" (ngModelChange)="checkButtonState($event)"/>
-                <i-x-circle class="icon" (click)="removePerson(i)"></i-x-circle>
-            </div>
+                <div class="person" *ngFor="let person of allPeople; let i = index">
+                    <input #input type="text" class="name" placeholder="enter name..." [(ngModel)]="person.name" (ngModelChange)="checkButtonState($event)"/>
+                    <i-x-circle class="icon" (click)="removePerson(i)"></i-x-circle>
+                </div>
 
         </div>
 

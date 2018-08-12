@@ -11,6 +11,12 @@ import { LoginHeaderComponent } from '../../nubs/loginheader/loginheader.compone
 ////////////////////////////////
 ////////// SERVICES
 import { APIService } from '../../../services/api.service';
+import { log } from 'util';
+import { log } from 'util';
+import { log } from 'util';
+import { log } from 'util';
+import { log } from 'util';
+import { log } from 'util';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SETUP COMPONENT
@@ -24,6 +30,7 @@ import { APIService } from '../../../services/api.service';
 //////////////////////////////// EXPORT CLASS
 export class PageRegisterComponent {
     @ViewChild(LoginHeaderComponent) loginheader: LoginHeaderComponent;
+    @ViewChild("username") usernameField: ElementRef;
     
     hideRegister:boolean = false;
     errorMessage:string;
@@ -32,11 +39,25 @@ export class PageRegisterComponent {
         "username": "",
         "password": ""
     }
+    confirmPassword = "";
+    registerDisabled:boolean = true;
+    passwordsMatch:boolean = false;
 
     constructor (
         private router: Router,
         private apiService: APIService
     ) {}   
+
+    ngAfterViewInit() {
+
+        var self = this;
+        
+        var focusTimeout = setTimeout(function(){
+            self.usernameField.nativeElement.focus();
+            clearTimeout(focusTimeout);
+        }, 300);
+        
+    }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PUBLIC FUNCTIONS
@@ -60,6 +81,26 @@ export class PageRegisterComponent {
             this.router.navigate(['/']); 
         }, 1000);
     }
+
+    ////////////////////////////////
+    checkButtonState() {
+        
+        var notFilledOut = false;
+        
+        var username = this.user.username;
+        var password = this.user.password;
+        var confirm = this.confirmPassword;
+
+        this.passwordsMatch = (password == confirm);
+        var fieldsEmpty = (username == "" || password == "" || confirm == "");
+
+        (fieldsEmpty && !this.passwordsMatch || !this.passwordsMatch) ? notFilledOut = true : notFilledOut = false;
+
+        (!notFilledOut) ? this.registerDisabled = false : this.registerDisabled = true;
+
+
+    }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PRIVATE FUNCTIONS

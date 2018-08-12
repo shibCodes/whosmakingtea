@@ -62,6 +62,9 @@ export class SideNavComponent implements OnInit {
     ////////////////////////////////
     updateLists(res) {
 
+        console.log("update lists!");
+        console.log("res: ", res);
+
         this.addNewList = false;
         this.listName = "";
 
@@ -76,12 +79,15 @@ export class SideNavComponent implements OnInit {
 
         this.lists.push(listObj);
 
-        this.setSelected(res.lists_table_id);
+        this.setSelected(res.list_id);
 
     }
 
     ////////////////////////////////
     setSelected(selectedId) {
+
+        console.log("set selected: ", selectedId);
+        console.log("lists: ", this.lists);
 
         for (var i = 0; i < this.lists.length; i++) {
             

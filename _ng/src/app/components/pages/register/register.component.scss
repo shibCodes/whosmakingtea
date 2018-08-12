@@ -61,6 +61,10 @@
                 border: none;
                 outline: none;
 
+                &.dont-match {
+                    color: $colourError;
+                }
+
                 &::-webkit-input-placeholder { color: rgba(255,255,255,0.2); }
             }
         }

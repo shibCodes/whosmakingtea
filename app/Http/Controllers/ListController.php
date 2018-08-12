@@ -149,7 +149,7 @@ class ListController extends Controller
 
         /////////////////////////
         $lists = app('db')->select("SELECT * FROM lists WHERE lists_table_uid = '".$user[0]->users_table_id."' AND lists_table_active = true ORDER BY lists_table_id ASC");
-        if (sizeof($lists) <= 0) return response()->json(['error' => "List doesn't exist"], 400);
+        if (sizeof($lists) <= 0) return response()->json([], 200);
 
         $listsToReturn = [];
 

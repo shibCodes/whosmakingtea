@@ -11,8 +11,8 @@
             <div class="user" *ngFor="let user of selectedList?.participants; let i = index" [ngClass]="{'deselected': !user.selected}">
                 <div class="teasmade-graph" [ngStyle]="{'width': calculateWidth(i)}"></div>
                 <div class="user-deets">
-                    <i-check-circle class="icon" [hidden]="!user.selected" (click)="togglePerson(i)"></i-check-circle>
-                    <i-circle class="icon" [hidden]="user.selected" (click)="togglePerson(i)"></i-circle>
+                    <i-check-circle class="icon" [ngClass]="{'hidden': !user.selected}" [hidden]="!user.selected" (click)="togglePerson(i)"></i-check-circle>
+                    <i-circle class="icon" [ngClass]="{'hidden': user.selected}" [hidden]="user.selected" (click)="togglePerson(i)"></i-circle>
                     <input type="text" class="name" [(ngModel)]="user.name" (ngModelChange)="updateName(i)"  #input/> 
                     <div class="stats">drunk: {{user.tea_drank}}</div>
                     <div class="stats">made: {{user.tea_made}}</div>

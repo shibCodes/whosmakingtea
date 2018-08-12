@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Router }   from '@angular/router';
 import { CookieService } from 'ng2-cookies';
+import { environment } from '../../environments/environment';
 
 ////////////////////////////////
 ////////// RXJS
@@ -21,8 +22,7 @@ import 'rxjs/add/operator/toPromise';
 export class APIService {
 	authToken: string;
 
-	//private baseURL = 'http://192.168.33.10/api/';
-	private baseURL = '/api/';
+	private baseURL = environment.baseURL;
 	private headers = new Headers();
 	private options;
 

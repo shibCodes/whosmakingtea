@@ -24,10 +24,10 @@ export class PickerComponent {
     @ViewChildren('input') inputElements;
 
     ////////////////////////////////
-    ngAfterViewInit() {
+    /*ngAfterViewInit() {
         this.inputElements.changes.subscribe((d) => 
         this.focusElement(d));
-    }
+    }*/
 
     ////////////////////////////////
     allPeople = [];

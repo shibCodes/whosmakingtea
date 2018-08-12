@@ -11,17 +11,17 @@
             
             <div class="input-wrap">
                 <div class="field">
-                    <input #input type="text" class="name" placeholder="username..." [(ngModel)]="user.username" />
+                    <input #username type="text" class="name" placeholder="username..." [(ngModel)]="user.username" (ngModelChange)="checkButtonState()"/>
                 </div>
                 <div class="field">
-                    <input #input type="password" class="password" placeholder="password..." [(ngModel)]="user.password" />
+                    <input #password type="password" class="password" placeholder="password..." [(ngModel)]="user.password" (ngModelChange)="checkButtonState()"/>
                 </div>
                 <div class="field">
-                    <input #input type="password" class="password" placeholder="confirm password..." />
+                    <input #passwordconfirm type="password" class="password" [ngClass]="{'dont-match': !passwordsMatch}" placeholder="confirm password..." [(ngModel)]="confirmPassword" (ngModelChange)="checkButtonState()"/>
                 </div>
             </div>
 
-            <button class="butt-general butt-register" (click)="register()">Register!</button>
+            <button class="butt-general butt-register" (click)="register()" [disabled]="registerDisabled">Register!</button>
             <button class="butt-general butt-cancel" (click)="cancel()">Cancel</button>
 
         </div>

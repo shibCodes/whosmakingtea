@@ -24,6 +24,7 @@ import { APIService } from '../../../services/api.service';
 //////////////////////////////// EXPORT CLASS
 export class PageLoginComponent {
     @ViewChild(LoginHeaderComponent) loginheader: LoginHeaderComponent;
+    @ViewChild("username") usernameField: ElementRef;
 
     hideLogin:boolean = false;
     loginDisabled:boolean = true;
@@ -37,7 +38,18 @@ export class PageLoginComponent {
     constructor (
         private router: Router,
         private apiService: APIService
-    ) {}   
+    ) { }  
+    
+    ngAfterViewInit() {
+
+        var self = this;
+        
+        var focusTimeout = setTimeout(function(){
+            self.usernameField.nativeElement.focus();
+            clearTimeout(focusTimeout);
+        }, 300);
+        
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////// PUBLIC FUNCTIONS
@@ -58,7 +70,9 @@ export class PageLoginComponent {
 
         let pickerTimeout = setTimeout(() => {  
             this.router.navigate(['/']); 
+            clearTimeout(pickerTimeout);
         }, 1000);
+
     }
 
     ////////////////////////////////

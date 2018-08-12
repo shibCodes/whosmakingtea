@@ -45,7 +45,7 @@ button {
     text-align: left;
     font-weight: 400;
 
-    &:hover {
+    &:hover, &:focus, &:active {
       background: $colourFontLight;
       color: $colourGradientStart;
     }
@@ -76,7 +76,7 @@ button {
     overflow: hidden;
     transition: all 1s;
 
-    &:hover {
+    &:hover, &:focus, &:active {
       background: transparent;
       color: $colourFontLight;
     }
