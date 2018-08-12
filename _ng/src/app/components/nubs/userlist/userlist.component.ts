@@ -3,12 +3,14 @@
 
 ////////////////////////////////
 ////////// ANGULAR CORE
-import { Component, Input, Output, ViewChildren, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, Input, Output, ViewChildren, SimpleChanges, EventEmitter, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { stringify } from '@angular/compiler/src/util';
 
 ////////////////////////////////
 ////////// SERVICES
 import { APIService } from '../../../services/api.service';
-import { stringify } from '@angular/compiler/src/util';
+import { UserListService } from '../../../services/userlist.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SETUP COMPONENT
@@ -20,9 +22,19 @@ import { stringify } from '@angular/compiler/src/util';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// EXPORT CLASS
-export class UserListComponent {
-    @Input() selectedList;
+export class UserListComponent implements OnInit {
     @Output() showPopup: EventEmitter<boolean> = new EventEmitter();
+    selectedListSubscription:Subscription;
+    selectedList = {
+        "list_name": "",
+        "list_id": "",
+        "total_runs": 0,
+        "selected": false,
+        "showmore": false,
+        "showedit": false,
+        "participants": []
+    };
+    noLists:boolean = true;
     noPeopleMessage:string = "Oh no! There are no people in your list!";
     instructionMessage:string = "Time for a round of tea?";
     hideLoady:boolean = true;
@@ -43,8 +55,36 @@ export class UserListComponent {
     errorMessage:string = "";
 
     constructor (
-        private apiService: APIService
+        private apiService: APIService,
+        private userListService: UserListService
     ) {} 
+
+    ngOnInit() {
+        this.selectedListSubscription = this.userListService.selectedListObservable.subscribe(
+            selectedList => this.showSelectedList(selectedList));
+
+        this.checkIfUserHasLists();
+    }
+
+    ////////////////////////////////
+    checkIfUserHasLists() {
+
+        console.log("checkIfUserHasLists(): ", this.selectedList);
+
+        var listIsEmpty = Object.keys(this.selectedList).length === 0 && this.selectedList.constructor === Object;
+
+        console.log("list is empty: ", listIsEmpty);
+
+        if (listIsEmpty) {
+            this.pickPersonVisible = false;
+            this.addVisible = false;
+            this.instructionMessage = "Oh no! You have no lists! Why don't you make one? :)";
+        }
+        else {
+            this.noLists = false;
+        }
+
+    }
 
     /*list = [
         {
@@ -60,7 +100,7 @@ export class UserListComponent {
     ]*/
 
     ////////////////////////////////
-    ngOnChanges(changes: SimpleChanges) {
+    /*ngOnChanges(changes: SimpleChanges) {
 
         ////////////////////////////////
         this.addVisible = true;
@@ -100,6 +140,44 @@ export class UserListComponent {
             this.instructionMessage = "Oh no! There are no people in your list!";
         }
         
+    }*/
+
+    ////////////////////////////////
+    showSelectedList(list) {
+
+        console.log("showSelectedList", list);
+        
+        ////////////////////////////////
+        this.selectedList = list;
+
+        var listIsEmpty = Object.keys(this.selectedList).length === 0 && this.selectedList.constructor === Object;
+
+        if (!listIsEmpty) {
+
+            ////////////////////////////////
+            this.addVisible = true;
+            this.pickPersonVisible = true;
+            this.noLists = false;
+
+            console.log(this.selectedList);
+
+
+            if (this.selectedList.participants.length >= 2) {
+                this.pickPersonDisabled = false;
+                this.pickPersonVisible = true;
+            }
+            else if (this.selectedList.participants.length < 2) {
+                this.pickPersonDisabled = true;
+            }
+
+            if (this.selectedList.participants.length == 0) {
+                this.instructionMessage = "Oh no! There are no people in your list!";
+            }
+
+        }
+
+        this.resetDefaults();
+
     }
     
     ////////////////////////////////
@@ -405,7 +483,7 @@ export class UserListComponent {
             }
         }
 
-        this.selectedList.total_runs++;
+        this.selectedList.total_runs = this.selectedList.total_runs + 1;
 
         this.updateList();
         this.updateParticipants();
@@ -490,14 +568,26 @@ export class UserListComponent {
 
     ////////////////////////////////
     private resetDefaults() {
-        this.instructionMessage = "Time for a round of tea?";
+       
+        var listIsEmpty = Object.keys(this.selectedList).length === 0 && this.selectedList.constructor === Object;
+
+        if (listIsEmpty) {
+            this.instructionMessage = "Oh no! You have no lists! Why don't you make one? :)";
+        }
+        else if (this.selectedList.participants.length == 0) {
+            this.instructionMessage = "Oh no! There are no people in your list!";
+        }
+        else {
+            this.instructionMessage = "Time for a round of tea?";
+        }
+             
         this.hideLoady = true;
         this.hideSelection = true;
         this.hideList = false;
         this.selectedPersonName = "";
         this.selectedPerson;
-        this.pickPersonDisabled = true;
-        this.pickPersonVisible = false;
+        //this.pickPersonDisabled = true;
+        //this.pickPersonVisible = true;
     }
 
     ////////////////////////////////

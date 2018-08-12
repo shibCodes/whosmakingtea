@@ -159,6 +159,12 @@ export class APIService {
 		
 	}
 
+	logout() {
+		this.cookieService.deleteAll();
+		localStorage.removeItem("username");
+		this.router.navigate(['/']);
+	}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PRIVATE FUNCTIONS
 	private extractData(res: Response) {

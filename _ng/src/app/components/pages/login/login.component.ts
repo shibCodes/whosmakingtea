@@ -3,7 +3,7 @@
 
 ////////////////////////////////
 ////////// ANGULAR CORE
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LoginHeaderComponent } from '../../nubs/loginheader/loginheader.component';

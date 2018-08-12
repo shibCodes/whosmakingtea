@@ -1,7 +1,7 @@
 <section class="userlist">
     
     <p class="no-users-text">{{instructionMessage}}</p>
-    <p class="rounds-made-text" [hidden]="selectedList == undefined" [ngClass]="{'hidden': hideList}">You guys have made {{selectedList?.total_runs}} rounds! Keep it up!</p>
+    <p class="rounds-made-text" [hidden]="noLists == true" [ngClass]="{'hidden': hideList}">You guys have made {{selectedList?.total_runs}} rounds! Keep it up!</p>
     <div class="error" (hidden)="showError" [ngClass]="{ 'toggleUp': showError }"><i-alert-circle class="icon"></i-alert-circle><p>{{errorMessage}}</p></div>
 
     <div class="list-wrap" [ngClass]="{'hidden': hideList}">

@@ -3,7 +3,7 @@
 
 ////////////////////////////////
 ////////// ANGULAR CORE
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LoginHeaderComponent } from '../../nubs/loginheader/loginheader.component';
@@ -11,12 +11,6 @@ import { LoginHeaderComponent } from '../../nubs/loginheader/loginheader.compone
 ////////////////////////////////
 ////////// SERVICES
 import { APIService } from '../../../services/api.service';
-import { log } from 'util';
-import { log } from 'util';
-import { log } from 'util';
-import { log } from 'util';
-import { log } from 'util';
-import { log } from 'util';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SETUP COMPONENT
@@ -91,13 +85,12 @@ export class PageRegisterComponent {
         var password = this.user.password;
         var confirm = this.confirmPassword;
 
-        this.passwordsMatch = (password == confirm);
+        this.passwordsMatch = (password == confirm && password != "");
         var fieldsEmpty = (username == "" || password == "" || confirm == "");
 
         (fieldsEmpty && !this.passwordsMatch || !this.passwordsMatch) ? notFilledOut = true : notFilledOut = false;
 
         (!notFilledOut) ? this.registerDisabled = false : this.registerDisabled = true;
-
 
     }
 

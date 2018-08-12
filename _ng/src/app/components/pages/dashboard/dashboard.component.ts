@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 ////////////////////////////////
 ////////// SERVICES
 import { APIService } from '../../../services/api.service';
+import { UserListService } from '../../../services/userlist.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SETUP COMPONENT
@@ -22,11 +23,12 @@ import { APIService } from '../../../services/api.service';
 export class PageDashboardComponent implements OnInit {
     username:string;
     allLists = [];
-    selectedList;
+    selectedList = {};
     showDeletePopup:boolean = false;
     
     constructor (
-        private apiService: APIService
+        private apiService: APIService,
+        private userListService: UserListService
     ) {}   
 
     ngOnInit() {
@@ -36,9 +38,8 @@ export class PageDashboardComponent implements OnInit {
         this.username = localStorage.getItem("username");
 
         this.apiService.getUserLists(this.username)
-        .then(this.showList.bind(this));
-        
-
+            .then(this.showList.bind(this));
+    
     }
 
     ////////////////////////////////
@@ -64,18 +65,11 @@ export class PageDashboardComponent implements OnInit {
 
         }
 
-    }
+        console.log("all lists: ", this.allLists);
+        console.log("selected list: ", this.selectedList);
 
-    ////////////////////////////////
-    changeSelected(selectedListId) {
-        
-        for (var i = 0; i < this.allLists.length; i++) {
-
-            if (selectedListId == this.allLists[i].list_id) {
-                this.selectedList = this.allLists[i];
-            }
-
-        }
+        this.userListService.updateSelectedList(this.selectedList);
+        this.userListService.updateAllLists(this.allLists);
 
     }
 

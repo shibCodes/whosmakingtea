@@ -10,8 +10,8 @@
             <i-more-horizontal class="icon" [hidden]="list.showmore" [ngClass]="{'selected': list.selected && !list.showmore}" (click)="showMore(i)"></i-more-horizontal>
             <i-x class="icon" [hidden]="!list.showmore" [ngClass]="{'selected': list.selected && list.showmore}" (click)="showMore(i)"></i-x>
             <div class="showmore-wrap" [ngClass]="{'visible': list.showmore}">
-                <i-edit-3 class="function" [hidden]="list.showedit" (click)="editListName(i)"></i-edit-3>
-                <i-save class="function" [hidden]="!list.showedit" (click)="saveListName(i)"></i-save>
+                <i-edit-3 class="function" [ngClass]="{'hidden': list.showedit}" (click)="editListName(i)"></i-edit-3>
+                <i-save class="function" [ngClass]="{'hidden': !list.showedit}" (click)="saveListName(i)"></i-save>
                 <i-trash-2 class="function" (click)="deleteList()"></i-trash-2>
             </div>
         </div>
@@ -22,6 +22,10 @@
         {{newlistname.focus()}}
     </div>
     
-    <button class="butt-add butt-general" (click)="addList()">New List <i-plus-circle class="icon"></i-plus-circle></button> 
+    <button class="butt-add butt-general" (click)="addList()" [ngClass]="{'hidden': addNewList}">New List <i-plus-circle class="icon"></i-plus-circle></button> 
+    <button class="butt-general butt-cancel" (click)="cancelAdd()" [ngClass]="{'hidden': !addNewList}">Cancel</button>
 
+    <section class="section-logout">
+        <button class="butt-general butt-logout" (click)="logout()">Logout <i-log-out class="icon"></i-log-out></button>
+    </section>
 </nav>
