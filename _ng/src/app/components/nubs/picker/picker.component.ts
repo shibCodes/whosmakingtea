@@ -47,10 +47,6 @@ export class PickerComponent {
     ////////////////////////////////
     ////////////////////////////////
     addPerson() {
-
-        //this.hideIntroInt++;
-
-        //if (!this.hideIntro) { console.log("lel"); this.hideIntro = true; }
         
         if (this.numberAdded == 0) { this.hideTagline = true; }
 

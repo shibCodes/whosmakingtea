@@ -65,9 +65,6 @@ export class PageDashboardComponent implements OnInit {
 
         }
 
-        console.log("all lists: ", this.allLists);
-        console.log("selected list: ", this.selectedList);
-
         this.userListService.updateSelectedList(this.selectedList);
         this.userListService.updateAllLists(this.allLists);
 
@@ -75,7 +72,6 @@ export class PageDashboardComponent implements OnInit {
 
     ////////////////////////////////
     showPopup(isVisible) {
-        //console.log("is visible: ", isVisible);
 
         this.showDeletePopup = isVisible;
     }

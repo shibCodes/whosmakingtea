@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 ////////// SERVICES
 import { APIService } from '../../../services/api.service';
 import { UserListService } from '../../../services/userlist.service';
+import { PopupService } from '../../../services/popup.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SETUP COMPONENT
@@ -22,23 +23,22 @@ import { UserListService } from '../../../services/userlist.service';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// EXPORT CLASS
 export class SideNavComponent implements OnInit {
-    /*@Input() lists;
-    @Input() selectedList;
-    @Output() selectedChanged: EventEmitter<number> = new EventEmitter(); */
-    @Output() showPopup: EventEmitter<boolean> = new EventEmitter();
     @ViewChildren('sidebarlists') sidebarLists;
     allListsSubscription:Subscription;
     selectedListSubscription:Subscription;
+    deleteListSubscription:Subscription;
     lists = [];
     selectedList = undefined;
     username:string;
     listName:string;
     addNewList:boolean = false;
     currentListName:string = undefined;
+    deletedList:any;
 
     constructor (
         private apiService: APIService,
-        private userListService: UserListService
+        private userListService: UserListService,
+        private popupService: PopupService
     ) {} 
 
     ////////////////////////////////
@@ -49,6 +49,9 @@ export class SideNavComponent implements OnInit {
 
         this.selectedListSubscription = this.userListService.selectedListObservable.subscribe(
             selectedList => this.updateSelectedList(selectedList));
+
+        this.deleteListSubscription = this.popupService.deleteListObservable.subscribe(
+            deletedList => this.removeList(deletedList));
 
         this.username = localStorage.getItem("username");
 
@@ -98,35 +101,34 @@ export class SideNavComponent implements OnInit {
     ////////////////////////////////
     updateLists(res) {
 
-        console.log("update lists!");
-        console.log("res: ", res);
+        console.log(res);
 
-        this.addNewList = false;
-        this.listName = "";
+        if (res.error == undefined) {
 
-        var listObj = {
-            "list_name": res.list_name,
-            "list_id": res.list_id,
-            "total_runs": res.list_total_runs,
-            "selected": false,
-            "showmore": false,
-            "showedit": false,
-            "participants": []
+            this.addNewList = false;
+            this.listName = "";
+
+            var listObj = {
+                "list_name": res.list_name,
+                "list_id": res.list_id,
+                "total_runs": res.list_total_runs,
+                "selected": false,
+                "showmore": false,
+                "showedit": false,
+                "participants": []
+            }
+
+            this.lists.push(listObj);
+
+            this.setSelected(res.list_id);
+
+            this.userListService.updateAllLists(this.lists);
         }
-
-        this.lists.push(listObj);
-
-        this.setSelected(res.list_id);
-
-        this.userListService.updateAllLists(this.lists);
 
     }
 
     ////////////////////////////////
     setSelected(selectedId) {
-
-        console.log("set selected: ", selectedId);
-        console.log("lists: ", this.lists);
 
         for (var i = 0; i < this.lists.length; i++) {
             
@@ -146,8 +148,6 @@ export class SideNavComponent implements OnInit {
 
     ////////////////////////////////
     showMore(listIndex) {
-
-        //console.log(listIndex);
 
         this.lists[listIndex].showmore = !this.lists[listIndex].showmore;
 
@@ -171,8 +171,6 @@ export class SideNavComponent implements OnInit {
 
         }, 20);
 
-        //console.log("editListName()");
-
     }
 
     ////////////////////////////////
@@ -191,10 +189,73 @@ export class SideNavComponent implements OnInit {
     }
 
     ////////////////////////////////
-    deleteList() {
+    deleteList(listIndex) {
 
-        this.showPopup.emit(true);
+        console.log("delete list");
 
+        let list = this.lists[listIndex];
+
+        let popup = {
+            "type": "list",
+            "show": true,
+            "item": list
+        }
+
+        console.log(popup);
+
+        this.popupService.updateShowPopup(popup);
+
+    }
+
+    ////////////////////////////////
+    removeList(list) {
+
+        var listEmpty = Object.keys(list).length === 0 && list.constructor === Object;
+
+        console.log("remove list: ", list);
+        
+        var listObj = {
+            "list_name": list.list_name,
+            "username": localStorage.getItem("username"),
+            "list_id": list.list_id
+        }
+
+        this.deletedList = listObj;
+
+        if (!listEmpty) {
+            this.apiService.deleteList(listObj).then(this.removeFromSidebar.bind(this));
+        }
+    
+    }
+
+    ////////////////////////////////
+    removeFromSidebar(res) {
+        var error = res.error;
+
+        console.log(this.lists);
+
+        if (error != undefined) {
+            // Add to sync list to delete later
+            //this.errorMessage = "Oh no! There was a problem deleting that person! :( Maybe try again later?"; 
+            //this.showError = true;
+
+            this.popupService.updateDeleteStatus('error');
+        }
+        else {
+
+            for (var i = 0; i < this.lists.length; i++) {
+
+                if (this.lists[i].list_id == this.deletedList.list_id) {
+                    this.lists.splice(i, 1);
+                    break;
+                }
+    
+            }
+
+            this.popupService.updateDeleteStatus('done');
+
+            this.setSelected(this.lists[0].list_id);
+        }
     }
 
     ////////////////////////////////

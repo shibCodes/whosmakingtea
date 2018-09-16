@@ -23,16 +23,3 @@ export class UserListService {
     }
 
 }
-
-
-// in the component
-// actionStateSubscription:Subscription;
-
-// update it with this
-//this.actionService.updateActionState(this.actionOpen);
-
-// in ngOnInit
-//////////////////////////////
-/*this.actionStateSubscription = this.actionService.actionObservable$.subscribe(
-    actionState => this.updateActionState(actionState));*/
-

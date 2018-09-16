@@ -11,6 +11,7 @@ import { stringify } from '@angular/compiler/src/util';
 ////////// SERVICES
 import { APIService } from '../../../services/api.service';
 import { UserListService } from '../../../services/userlist.service';
+import { PopupService } from '../../../services/popup.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SETUP COMPONENT
@@ -25,6 +26,7 @@ import { UserListService } from '../../../services/userlist.service';
 export class UserListComponent implements OnInit {
     @Output() showPopup: EventEmitter<boolean> = new EventEmitter();
     selectedListSubscription:Subscription;
+    deleteUserSubscription:Subscription;
     selectedList = {
         "list_name": "",
         "list_id": "",
@@ -53,15 +55,20 @@ export class UserListComponent implements OnInit {
     showError:boolean = false;
     updateDisabled:boolean = false;
     errorMessage:string = "";
+    deletedUser:any = {};
 
     constructor (
         private apiService: APIService,
-        private userListService: UserListService
+        private userListService: UserListService,
+        private popupService: PopupService
     ) {} 
 
     ngOnInit() {
         this.selectedListSubscription = this.userListService.selectedListObservable.subscribe(
             selectedList => this.showSelectedList(selectedList));
+
+        this.deleteUserSubscription = this.popupService.deleteUserObservable.subscribe(
+            deletedUser => this.removeUser(deletedUser));
 
         this.checkIfUserHasLists();
     }
@@ -69,11 +76,7 @@ export class UserListComponent implements OnInit {
     ////////////////////////////////
     checkIfUserHasLists() {
 
-        console.log("checkIfUserHasLists(): ", this.selectedList);
-
         var listIsEmpty = Object.keys(this.selectedList).length === 0 && this.selectedList.constructor === Object;
-
-        console.log("list is empty: ", listIsEmpty);
 
         if (listIsEmpty) {
             this.pickPersonVisible = false;
@@ -86,66 +89,8 @@ export class UserListComponent implements OnInit {
 
     }
 
-    /*list = [
-        {
-            "name": "Shib",
-            "tea_made": 1,
-            "tea_drank": 1
-        },
-        {
-            "name": "Joel",
-            "tea_made": 0,
-            "tea_drank": 0
-        }
-    ]*/
-
-    ////////////////////////////////
-    /*ngOnChanges(changes: SimpleChanges) {
-
-        ////////////////////////////////
-        this.addVisible = true;
-        this.pickPersonVisible = true;
-
-        ////////////////////////////////
-        if (changes.selectedList.currentValue == undefined) {
-            this.pickPersonVisible = false;
-            this.addVisible = false;
-            this.instructionMessage = "Oh no! You have no lists! Why don't you make one? :)";
-        }
-        else {
-            this.instructionMessage = "Time for a round of tea?";
-        }
-
-        ////////////////////////////////
-        if (changes.selectedList.previousValue != undefined) {
-
-            var currentList = changes.selectedList.currentValue.list_id;
-            var previousList = changes.selectedList.previousValue.list_id;
-
-            if (currentList != previousList) {
-
-                this.resetDefaults();
-
-            }
-        
-        }
-
-        ////////////////////////////////
-        if (changes.selectedList.currentValue != undefined && changes.selectedList.currentValue.participants.length >= 2) {
-            this.pickPersonDisabled = false;
-            this.pickPersonVisible = true;
-        }
-
-        if (changes.selectedList.currentValue != undefined && changes.selectedList.currentValue.participants.length <= 0) {
-            this.instructionMessage = "Oh no! There are no people in your list!";
-        }
-        
-    }*/
-
     ////////////////////////////////
     showSelectedList(list) {
-
-        console.log("showSelectedList", list);
         
         ////////////////////////////////
         this.selectedList = list;
@@ -158,9 +103,6 @@ export class UserListComponent implements OnInit {
             this.addVisible = true;
             this.pickPersonVisible = true;
             this.noLists = false;
-
-            console.log(this.selectedList);
-
 
             if (this.selectedList.participants.length >= 2) {
                 this.pickPersonDisabled = false;
@@ -222,31 +164,41 @@ export class UserListComponent implements OnInit {
 
     ////////////////////////////////
     isLastElement(index) {
-        //console.log(index);
+        
     }
 
     ////////////////////////////////
     deleteParticipant(participantIndex) {
 
-        this.showPopup.emit(true);
+        let user = this.selectedList.participants[participantIndex];
 
-        // delete from db
-        // then splice from list
+        let popup = {
+            "type": "user",
+            "show": true,
+            "item": user
+        }
 
-        /*var participantObj = {
+        this.popupService.updateShowPopup(popup);        
+
+    }
+
+    ////////////////////////////////
+    removeUser(user) {
+
+        var userEmpty = Object.keys(user).length === 0 && user.constructor === Object;
+        
+        var participantObj = {
             "list_name": this.selectedList.list_name,
             "username": localStorage.getItem("username"),
-            "pid": this.selectedList.participants[participantIndex].pid
+            "pid": user.pid
         }
 
-        this.selectedList.participants.splice(participantIndex, 1);
+        this.deletedUser = participantObj;
 
-        if (this.selectedList.participants.length < 2) {
-            this.pickPersonDisabled = true;
+        if (!userEmpty) {
+            this.apiService.deleteParticipant(participantObj).then(this.removeFromSelectedList.bind(this));
         }
-
-        this.apiService.deleteParticipant(participantObj).then(this.removeFromSelectedList.bind(this));*/
-
+    
     }
 
     ////////////////////////////////
@@ -272,9 +224,19 @@ export class UserListComponent implements OnInit {
     ////////////////////////////////
     togglePerson(personIndex) {
 
-        //console.log(this.selectedList.participants);
-
         this.selectedList.participants[personIndex].selected = !this.selectedList.participants[personIndex].selected;
+
+        var numberSelected = 0;
+
+        for (var i = 0; i < this.selectedList.participants.length; i++) {
+            
+            if (this.selectedList.participants[i].selected) {
+                numberSelected = numberSelected + 1;
+            }
+
+        }
+
+        (numberSelected < 2) ? this.pickPersonDisabled = true : this.pickPersonDisabled = false;
 
     }
     
@@ -297,22 +259,12 @@ export class UserListComponent implements OnInit {
                 var drank = this.selectedList.participants[i].tea_drank;
                 var notMade = drank - made;
 
-                /*var participationPercent = 0;
-
-                if (drank > 0) {
-                    participationPercent = (made / drank) * 100;
-                }
-
-                this.selectedList.participants[i].participation = participationPercent;*/
-
                 if (drank == 0) {
                     this.selectedList.participants[i].percentage_not_made = 100;
                 }
                 else {
                     this.selectedList.participants[i].percentage_not_made = (notMade / drank) * 100;
                 }
-
-                console.log(this.selectedList.participants[i].percentage_not_made);
 
                 peopleInRound.push(this.selectedList.participants[i]);
             }
@@ -327,9 +279,6 @@ export class UserListComponent implements OnInit {
         
         // Calculate the drink modifier
         peopleInRound.map( (a) => a.percentage = a.percentage_not_made*modifier );
-
-        //console.log("with modifier: ", peopleInRound);
-        //console.log(JSON.stringify(peopleInRound));
 
         // Now sort
         peopleInRound.sort( (a, b):number => { 
@@ -350,94 +299,40 @@ export class UserListComponent implements OnInit {
         var graphPlot = 100 / (peopleInRound.length - 1);
         var graphDiff = 0;
 
-       // console.log("graph plot: ", graphPlot);
-
         for (var p = 0; p < peopleInRound.length; p++) {
             
             var graphArrayNum = 100 - (graphPlot * p);
             
             graphDiff = graphDiff + graphArrayNum;
 
-           // console.log("graph array num: ", graphArrayNum);
-          //  console.log("graph diff: ", graphDiff);
         }
 
         graphDiff = graphDiff / 100;
 
-     //   console.log("actual graph diff: ", graphDiff);
-
-
         var randomMax = 0;
-
-        //console.log(peopleInRound);
-        //console.log(graphPlot);
-
 
         for (var i = 0; i < peopleInRound.length; i++) {
             
             var participantWeighter = graphPlot * i;
-            //var graphArrayNum = 100 - (graphPlot * i);
-
-            /*if (isNaN(peopleInRound[i].percentage)) {
-                //console.log("fix!");
-                peopleInRound[i].percentage = 0;
-            }*/
-
             var weightedPercentage = (peopleInRound[i].percentage + participantWeighter) / 2;
-            //(modPer * graphDiff) + 100 / 2 / graphDiff = result
-           // (moddedPerc * graphDiff) + graphArr[i] / 2 / graphDiff
-            //var weightedPercentage = (((peopleInRound[i].percentage * graphDiff) + graphArrayNum) / 2) / graphDiff;
 
-            //var weightedPercentage = (peopleInRound[i].percentage * graphDiff) + graphArrayNum / 2 / graphDiff;
             randomMax = randomMax + weightedPercentage;
 
-            //console.log(peopleInRound[i].percentage);
-            //console.log("weighted: ", weightedPercentage);
             peopleInRound[i].percentage = weightedPercentage;
 
-            //console.log("percentage: ", weightedPercentage);
-            //console.log("random max: ", randomMax);
-
-
         }
-
-        console.log(peopleInRound);
 
         var victim = null;
         var roulette = Math.ceil(Math.random() * randomMax);
         var pointer = 0;
-        //console.log("roulette: ", roulette);
+
         peopleInRound.forEach( (a) => {
-            //console.log(a.percentage);
             pointer = pointer + a.percentage;
             if (roulette <= pointer && victim == null && !a.last) {
                 victim = a;
-                ///if(!victims[a.name]) { victims[a.name] = 0; } victims[a.name] ++;
                 this.selectedPerson = victim;
             }
         });
-
-
-        ////////////////////////////////
-        //var shuffledArray = this.shuffleArray(peopleInRound);
-        //var participation = 100;
-
-        ////////////////////////////////
-        /*for (var i = 0; i < shuffledArray.length; i++) {
-
-            if (shuffledArray[i].participation < participation && !shuffledArray[i].last) {
-                            
-                if (this.excludedPerson.pid != shuffledArray[i].pid) {
-                    participation = shuffledArray[i].participation;
-
-                    this.selectedPerson = shuffledArray[i];
-                }           
-
-            }
-
-        }*/
-
-
 
         ////////////////////////////////
         let pickerTimeout = setTimeout(() => {  
@@ -466,8 +361,6 @@ export class UserListComponent implements OnInit {
 
     ////////////////////////////////
     teaMade() {
-
-        //console.log(this.selectedPerson);
 
         for (var i = 0; i < this.selectedList.participants.length; i++) {
 
@@ -511,8 +404,6 @@ export class UserListComponent implements OnInit {
     ////////////////////////////////
     private showPickedPerson(selectedPerson) {
 
-        //console.log(selectedPerson);
-
         this.hideLoady = true;
         this.hideSelection = false;
 
@@ -553,8 +444,6 @@ export class UserListComponent implements OnInit {
 
     ////////////////////////////////
     private updateList() {
-        
-        //console.log(this.selectedList);
 
         var listObj = {
             "username": localStorage.getItem("username"),
@@ -586,8 +475,6 @@ export class UserListComponent implements OnInit {
         this.hideList = false;
         this.selectedPersonName = "";
         this.selectedPerson;
-        //this.pickPersonDisabled = true;
-        //this.pickPersonVisible = true;
     }
 
     ////////////////////////////////
@@ -628,6 +515,25 @@ export class UserListComponent implements OnInit {
             // Add to sync list to delete later
             this.errorMessage = "Oh no! There was a problem deleting that person! :( Maybe try again later?"; 
             this.showError = true;
+
+            this.popupService.updateDeleteStatus('error');
+        }
+        else {
+
+            for (var i = 0; i < this.selectedList.participants.length; i++) {
+
+                if (this.selectedList.participants[i].pid == this.deletedUser.pid) {
+                    this.selectedList.participants.splice(i, 1);
+                    break;
+                }
+    
+            }
+    
+            if (this.selectedList.participants.length < 2) {
+                this.pickPersonDisabled = true;
+            }
+
+            this.popupService.updateDeleteStatus('done');
         }
 
     }

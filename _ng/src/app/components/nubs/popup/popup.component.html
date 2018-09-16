@@ -1,13 +1,17 @@
-<section class="popup">
+<section class="popup" [ngClass]="{'visible': showPopup}">
 
-    <div class="popup-wrap">
+    <div class="popup-wrap" [ngClass]="{'disappear': deleteStatus == 'done'}">
         <div class="text-wrap">
-            <h1>Are you sure you want to delete the list <strong>Yolo</strong>?</h1>
-            <p>If you hit delete there's no way back! It's gone for good! No take-backsies!</p>
+            <h1>{{textLine1}}<strong>{{itemName}}</strong>?</h1>
+            <p>{{textLine2}}</p>
         </div>
         <div class="button-wrap">
-            <button class="butt-general" (click)="closePopup()">No, I made a mistake!</button>
-            <button class="butt-general butt-delete">DELETE IT!</button>
+            <button class="butt-general butt-dismiss" (click)="closePopup()" [disabled]="deleteStatus != 'idle'">No, I made a mistake!</button>
+            <button class="butt-general butt-delete" (click)="delete()" [ngClass]="{'processing': deleteStatus == 'processing', 'done': deleteStatus == 'done'}">
+                <span *ngIf="deleteStatus == 'processing'" class="processing"></span>
+                <i-check class="icon done" *ngIf="deleteStatus == 'done'"></i-check>
+                DELETE!
+            </button>
         </div>
     </div>
 

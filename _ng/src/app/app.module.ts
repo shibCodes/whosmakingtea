@@ -22,6 +22,7 @@ import { IconMoreHorizontal } from 'angular-feather';
 import { IconTrash2 } from 'angular-feather';
 import { IconX } from 'angular-feather';
 import { IconLogOut } from 'angular-feather';
+import { IconCheck } from 'angular-feather';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -51,7 +52,7 @@ import { AppRoutingModule }			from './modules/approute.module';
 ////////// SERVICES
 import { APIService } from './services/api.service';
 import { UserListService } from './services/userlist.service';
-
+import { PopupService } from './services/popup.service';
 import { CookieService } from 'ng2-cookies';
 
 ////////////////////////////////
@@ -96,12 +97,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     IconTrash2,
     IconX,
     IconLogOut,
+    IconCheck,
     PerfectScrollbarModule
   ],
   providers: [ 
     APIService, 
     UserListService,
     CookieService,
+    PopupService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

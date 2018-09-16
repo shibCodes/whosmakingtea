@@ -12,7 +12,7 @@
             <div class="showmore-wrap" [ngClass]="{'visible': list.showmore}">
                 <i-edit-3 class="function" [ngClass]="{'hidden': list.showedit}" (click)="editListName(i)"></i-edit-3>
                 <i-save class="function" [ngClass]="{'hidden': !list.showedit}" (click)="saveListName(i)"></i-save>
-                <i-trash-2 class="function" (click)="deleteList()"></i-trash-2>
+                <i-trash-2 class="function" (click)="deleteList(i)"></i-trash-2>
             </div>
         </div>
     </div>

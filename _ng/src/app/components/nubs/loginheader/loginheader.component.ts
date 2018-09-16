@@ -39,11 +39,7 @@ export class LoginHeaderComponent implements OnInit {
     ////////////////////////////////
     register() {
 
-        //console.log("current: ", this.currentUrl);
-
         (this.currentUrl == '/register') ? this.hideTagline = false : this.hideTagline = true;
-
-        //console.log("hide: ", this.hideTagline);
 
         let pickerTimeout = setTimeout(() => {  
             this.router.navigate(['/register']); 
@@ -54,11 +50,7 @@ export class LoginHeaderComponent implements OnInit {
     ////////////////////////////////
     login() {
 
-        //console.log("current: ", this.currentUrl);
-
         (this.currentUrl == '/login') ? this.hideTagline = false : this.hideTagline = true;
-
-        //console.log("hide: ", this.hideTagline);
 
         let pickerTimeout = setTimeout(() => {  
             this.router.navigate(['/login']); 

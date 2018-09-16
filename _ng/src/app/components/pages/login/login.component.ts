@@ -96,10 +96,6 @@ export class PageLoginComponent {
 
     private goToDashboard(res) {
 
-        //console.log("error: ", error);
-        //console.log("aw yeah bb");
-        //console.log(res);
-
         var error = res.error;
 
         if (error != undefined) { 

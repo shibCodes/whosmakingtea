@@ -95,6 +95,14 @@ export class APIService {
 	}
 
 	////////////////////////////////
+	deleteList(listObj: object) {
+		return this.http.post(this.baseURL + 'deletelist', listObj, this.options)
+						.toPromise()
+						.then(this.extractData)
+						.catch(this.handleError);
+	}
+
+	////////////////////////////////
 	addNewParticipant(userObj: object) {
 		return this.http.post(this.baseURL + 'addnewparticipant', userObj, this.options)
 						.toPromise()
@@ -122,11 +130,7 @@ export class APIService {
   	// Set the auth token so we can use it again and again
 	setAuthToken(auth_token) {
 
-		//console.log("setAuthToken(): ", auth_token);
-
 		if (auth_token.length > 0) {
-
-			//console.log("auth token: ", auth_token);
 
 			// Set auth token
 			this.authToken = auth_token;
@@ -144,8 +148,6 @@ export class APIService {
   	// Check if we have an auth token set and if not REJECT that shizz
 	checkAuthToken() {
 
-		//console.log("options: ", this.options);
-
 		var cookieAuth = this.cookieService.get("whosmakingtea");
 
 		if (this.authToken == undefined && cookieAuth != "" || this.authToken == undefined && cookieAuth != "undefined") {
@@ -160,6 +162,8 @@ export class APIService {
 	}
 
 	logout() {
+		this.headers = new Headers();
+		this.authToken = undefined;
 		this.cookieService.deleteAll();
 		localStorage.removeItem("username");
 		this.router.navigate(['/']);
