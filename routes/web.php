@@ -32,6 +32,7 @@ $app->group(['prefix' => 'api', 'middleware' => []], function () use ($app) {
     $app->post('/addnewparticipant',	['uses' => 'ParticipantController@addNewParticipant',   'middleware' => ['jwt', 'providedfieldsvalidator:username-list_name-selected-tea_drank-tea_made-local_id']]);
     $app->post('/updateparticipants',	['uses' => 'ParticipantController@updateParticipants',  'middleware' => ['jwt', 'providedfieldsvalidator:username-list_name-participants']]);
     $app->post('/deleteparticipant',	['uses' => 'ParticipantController@deleteParticipant',   'middleware' => ['jwt', 'providedfieldsvalidator:username-list_name-pid']]);
+    $app->post('/deletelist',	        ['uses' => 'ListController@deleteList',                 'middleware' => ['jwt', 'providedfieldsvalidator:username-list_name-list_id']]);
     //$app->get('/users',					['uses' => 'UserController@getUsers',					'middleware' => ['jwt']]);
     //$app->get('/user',					['uses' => 'UserController@getUser',					'middleware' => ['jwt', 'providedfieldsvalidator:userUID']]);
     //$app->post('/adduser',				['uses' => 'UserController@addUser',					'middleware' => ['jwt', 'providedfieldsvalidator:user']]);

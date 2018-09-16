@@ -43,9 +43,11 @@ class ListController extends Controller
 		/////////////////////////
 		$user = app('db')->select("SELECT * FROM users WHERE users_table_username = :users_table_username", array( "users_table_username"=>$input['username'] ) );
         if (sizeof($user) < 0) return $error->fieldValueError(array("username"), array("User doesn't exist"));
+
+        if (strlen($input['list_name']) > 25) return $error->fieldValueError(array("list_name"), array("List name too long"));
         
         /////////////////////////
-        $list = app('db')->select("SELECT lists_table_name FROM lists WHERE lists_table_name = '".$input['list_name']."' AND lists_table_uid = '".$user[0]->users_table_id."'");
+        $list = app('db')->select("SELECT lists_table_name FROM lists WHERE lists_table_name = '".$input['list_name']."' AND lists_table_uid = '".$user[0]->users_table_id."' AND lists_table_active = true");
         if (sizeof($list) > 0) return $error->fieldValueError(array("list_name"), array("You already have a list with the same name!"));
 
         /////////////////////////
@@ -204,10 +206,28 @@ class ListController extends Controller
         if (sizeof($user) <= 0) return $error->fieldValueError(array("username"), array("User doesn't exist"));
 
         /////////////////////////
-        $lists = app('db')->select("SELECT * FROM lists WHERE lists_table_uid = '".$user[0]->users_table_id."' AND lists_table_active = true ORDER BY lists_table_id ASC");
+        $lists = app('db')->select("SELECT * FROM lists WHERE lists_table_uid = '".$user[0]->users_table_id."' AND lists_table_id = ".$input['list_id']." AND lists_table_name = '".$input['list_name']."' ORDER BY lists_table_id ASC");
         if (sizeof($lists) <= 0) return response()->json(['error' => "List doesn't exist"], 400);
+
+        /////////////////////////
+        app('db')->beginTransaction();
+
+        $this->deleteListFromDB($lists[0]->lists_table_id);
+
+        /////////////////////////
+		app('db')->commit();
+
+		/////////////////////////
+		return response()->json([], 200);
     
-    
+    }
+
+    //////////////////////////////////////////////////////////////////
+    private function deleteListFromDB($id) {
+
+        /////////////////////////
+        $newItem = app('db')->update("UPDATE lists SET lists_table_active = false WHERE lists_table_id = '".$id."'");
+
     }
 
     //////////////////////////////////////////////////////////////////
