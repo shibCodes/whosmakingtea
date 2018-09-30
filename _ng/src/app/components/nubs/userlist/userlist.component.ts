@@ -25,6 +25,7 @@ import { PopupService } from '../../../services/popup.service';
 //////////////////////////////// EXPORT CLASS
 export class UserListComponent implements OnInit {
     @Output() showPopup: EventEmitter<boolean> = new EventEmitter();
+    @Output() showMenu: EventEmitter<boolean> = new EventEmitter();
     selectedListSubscription:Subscription;
     deleteUserSubscription:Subscription;
     selectedList = {
@@ -56,6 +57,7 @@ export class UserListComponent implements OnInit {
     updateDisabled:boolean = false;
     errorMessage:string = "";
     deletedUser:any = {};
+    menuOpen:boolean = false;
 
     constructor (
         private apiService: APIService,
@@ -71,6 +73,12 @@ export class UserListComponent implements OnInit {
             deletedUser => this.removeUser(deletedUser));
 
         this.checkIfUserHasLists();
+    }
+    
+    ////////////////////////////////
+    toggleMenu() {
+        this.menuOpen = !this.menuOpen;
+        this.showMenu.emit(this.menuOpen);
     }
 
     ////////////////////////////////

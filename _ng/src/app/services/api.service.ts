@@ -36,16 +36,6 @@ export class APIService {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// PUBLIC FUNCTIONS
 
-
-	////////////////////////////////
-	// TODO: remove
-	getProjects() {
-    	return this.http.get('/assets/projects.json')
-						.toPromise()
-                  		.then(this.extractData)
-                  		.catch(this.handleError);
-	}
-
 	////////////////////////////////
 	loginUser(userObj: object) {
 		return this.http.post(this.baseURL + 'login', userObj)

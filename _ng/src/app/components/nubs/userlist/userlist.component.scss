@@ -7,6 +7,24 @@
     align-items: center;
     justify-content: center;
 
+    .ico-menu {
+        position: absolute;
+        top: 20px;
+        left: 260px;
+        transition: all 0.2s;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+
+        @media all and (min-width: 769px) {
+            display: none;
+        }
+    }
+
     .list-wrap {
         width: 100%;
         display: flex;
@@ -24,18 +42,36 @@
         max-height: 50vh;
         position: relative;
         padding-right: 20px;
+
+        @media all and (max-width: 600px) {
+            width: 100%;
+            padding-right: 0;
+        }
     }
 
-    .no-users-text {
-        text-align: center;
-        font-size: 1.5em;
+    .intro-text {
+
+        @media all and (max-width: 600px) {
+            margin-top: 40px;
+            width: 80%;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .no-users-text {
+            text-align: center;
+            font-size: 1.5em;
+        }
+    
+        .rounds-made-text {
+            font-size: 1.2em;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+
     }
 
-    .rounds-made-text {
-        font-size: 1.2em;
-        margin-top: 0;
-        margin-bottom: 30px;
-    }
+    
 
     .user {
         width: 100%;
@@ -43,6 +79,10 @@
         border-bottom: 2px solid rgba(255, 255, 255, 0.2);
         position: relative;
         transition: all 0.2s;
+
+        @media all and (max-width: 600px) {
+            height: 60px;
+        }
 
         &.deselected {
             opacity: 0.2;
@@ -77,6 +117,10 @@
                 z-index: 1;
     
                 &::-webkit-input-placeholder { color: rgba(255,255,255,0.2); }
+
+                @media all and (max-width: 600px) {
+                    font-size: 1.2em;
+                }
             }
 
             .icon { 
@@ -95,9 +139,19 @@
                 }
             }
 
-            .stats {
-                min-width: 80px;
+            .user-stats {
+                display: flex;
+
+                @media all and (max-width: 600px) {
+                    flex-direction: column;
+                }
+
+                .stats {
+                    min-width: 80px;
+                }
             }
+
+            
         }
 
     }

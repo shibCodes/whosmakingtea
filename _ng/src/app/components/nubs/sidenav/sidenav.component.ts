@@ -101,8 +101,6 @@ export class SideNavComponent implements OnInit {
     ////////////////////////////////
     updateLists(res) {
 
-        console.log(res);
-
         if (res.error == undefined) {
 
             this.addNewList = false;
@@ -191,8 +189,6 @@ export class SideNavComponent implements OnInit {
     ////////////////////////////////
     deleteList(listIndex) {
 
-        console.log("delete list");
-
         let list = this.lists[listIndex];
 
         let popup = {
@@ -200,8 +196,6 @@ export class SideNavComponent implements OnInit {
             "show": true,
             "item": list
         }
-
-        console.log(popup);
 
         this.popupService.updateShowPopup(popup);
 
@@ -211,8 +205,6 @@ export class SideNavComponent implements OnInit {
     removeList(list) {
 
         var listEmpty = Object.keys(list).length === 0 && list.constructor === Object;
-
-        console.log("remove list: ", list);
         
         var listObj = {
             "list_name": list.list_name,
@@ -231,8 +223,6 @@ export class SideNavComponent implements OnInit {
     ////////////////////////////////
     removeFromSidebar(res) {
         var error = res.error;
-
-        console.log(this.lists);
 
         if (error != undefined) {
             // Add to sync list to delete later

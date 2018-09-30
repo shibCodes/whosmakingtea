@@ -1,8 +1,11 @@
 <section class="userlist">
+    <i-menu class="icon ico-menu" (click)="toggleMenu()"></i-menu>
     
-    <p class="no-users-text">{{instructionMessage}}</p>
-    <p class="rounds-made-text" [hidden]="noLists == true" [ngClass]="{'hidden': hideList}">You guys have made {{selectedList?.total_runs}} rounds! Keep it up!</p>
-    <div class="error" (hidden)="showError" [ngClass]="{ 'toggleUp': showError }"><i-alert-circle class="icon"></i-alert-circle><p>{{errorMessage}}</p></div>
+    <div class="intro-text">
+        <p class="no-users-text">{{instructionMessage}}</p>
+        <p class="rounds-made-text" [hidden]="noLists == true" [ngClass]="{'hidden': hideList}">You guys have made {{selectedList?.total_runs}} rounds! Keep it up!</p>
+        <div class="error" (hidden)="showError" [ngClass]="{ 'toggleUp': showError }"><i-alert-circle class="icon"></i-alert-circle><p>{{errorMessage}}</p></div>
+    </div>
 
     <div class="list-wrap" [ngClass]="{'hidden': hideList}">
 
@@ -14,8 +17,10 @@
                     <i-check-circle class="icon" [ngClass]="{'hidden': !user.selected}" [hidden]="!user.selected" (click)="togglePerson(i)"></i-check-circle>
                     <i-circle class="icon" [ngClass]="{'hidden': user.selected}" [hidden]="user.selected" (click)="togglePerson(i)"></i-circle>
                     <input type="text" class="name" [(ngModel)]="user.name" (ngModelChange)="updateName(i)"  #input/> 
-                    <div class="stats">drunk: {{user.tea_drank}}</div>
-                    <div class="stats">made: {{user.tea_made}}</div>
+                    <span class="user-stats">
+                        <div class="stats">drunk: {{user.tea_drank}}</div>
+                        <div class="stats">made: {{user.tea_made}}</div>
+                    </span>
                     <i-x-circle class="icon" (click)="deleteParticipant(i)"></i-x-circle>
                 </div>
             </div>

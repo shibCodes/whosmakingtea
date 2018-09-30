@@ -25,6 +25,7 @@ export class PageDashboardComponent implements OnInit {
     allLists = [];
     selectedList = {};
     showDeletePopup:boolean = false;
+    openMenu:boolean = false;
     
     constructor (
         private apiService: APIService,
@@ -40,6 +41,11 @@ export class PageDashboardComponent implements OnInit {
         this.apiService.getUserLists(this.username)
             .then(this.showList.bind(this));
     
+    }
+
+    ////////////////////////////////
+    toggleMenu(event) {
+        this.openMenu = event;
     }
 
     ////////////////////////////////

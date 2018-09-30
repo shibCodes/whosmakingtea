@@ -1,9 +1,9 @@
 <loginheader></loginheader>
 
-<section class="section-dashboard">
+<section class="section-dashboard" [ngClass]="{'menu-open': openMenu}">
 
     <sidenav></sidenav>
-    <userlist></userlist>
+    <userlist (showMenu)="toggleMenu($event)"></userlist>
 
     <popup></popup>
 

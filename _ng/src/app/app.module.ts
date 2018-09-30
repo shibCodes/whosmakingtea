@@ -23,6 +23,7 @@ import { IconTrash2 } from 'angular-feather';
 import { IconX } from 'angular-feather';
 import { IconLogOut } from 'angular-feather';
 import { IconCheck } from 'angular-feather';
+import { IconMenu } from 'angular-feather';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -98,6 +99,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     IconX,
     IconLogOut,
     IconCheck,
+    IconMenu,
     PerfectScrollbarModule
   ],
   providers: [ 
