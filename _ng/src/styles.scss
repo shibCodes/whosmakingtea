@@ -14,6 +14,7 @@ body, html {
   color: $colourFontLight;
   width: 100%;
   height: 100%;
+  overscroll-behavior: none;
 }
 
 button {
@@ -56,6 +57,10 @@ button {
       top: 0; bottom: 0;
       margin: auto;
       right: 5px;
+    }
+
+    @media all and (max-width: 450px) {
+        transform: scale(0.8);
     }
 
   }
