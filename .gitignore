@@ -6,3 +6,10 @@ Homestead.yaml
 _portDBToHeroku
 *.sql
 /scotch-box
+scotch-box
+Vagrantfile
+VagrantSave.sh
+VagrantStart.sh
+VagrantBootstrap.sh
+.vagrant
+.vagrant/*
